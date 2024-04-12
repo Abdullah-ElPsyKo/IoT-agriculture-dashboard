@@ -4,72 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Page</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-      }
-      header {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        box-sizing: border-box; /* Ensures padding is included in the total width */
-      }
-      .logo,
-      .placeholder,
-      .location-selector {
-        margin: 0 10px; /* Adds space around the elements */
-        cursor: pointer;
-      }
-      .main-content {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px; /* Increases gap between squares */
-        margin: 20px 0;
-      }
-      .day-square {
-        width: 120px; /* Makes squares bigger */
-        height: 120px; /* Makes squares bigger */
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 10px; /* Adds some space around each square */
-      }
-      .info-block {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        margin-top: 20px; /* Adds space between rows of blocks */
-      }
-      .map,
-      .suggestions,
-      .live-map,
-      .warnings,
-      .graph {
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 5px; /* Adds space around the blocks */
-        height: 200px; /* Set height to match other elements */
-        width: calc(33.333% - 20px); /* Adjust width to fit container */
-      }
-      .suggestions {
-        width: calc(66.666% - 20px); /* Stretch suggestion element */
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="weather.js"></script>
   </head>
   <body>
     <header>
       <div class="left-buttons">
-        <span class="logo">Logo</span>
+        <img src="logo.png" alt="Logo" class="logo-img" />
         <button class="placeholder">Placeholder 1</button>
         <button class="placeholder">Placeholder 2</button>
       </div>
