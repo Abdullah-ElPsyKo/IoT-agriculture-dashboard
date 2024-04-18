@@ -2,10 +2,10 @@ interface WeatherData {
   id: number;
   date: string;
   city: string;
-  temperature: number;
-  precipitation: number;
-  soil_moisture: number;
-  winds: number;
+  temperature: string;
+  precipitation: string;
+  soil_moisture: string;
+  winds: string;
 }
 
 export default WeatherData;
