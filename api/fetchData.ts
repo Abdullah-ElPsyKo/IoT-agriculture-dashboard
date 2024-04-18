@@ -1,3 +1,5 @@
+import WeatherData from './types';
+
 export async function fetchData() {
   try {
     //get backend data
@@ -5,7 +7,7 @@ export async function fetchData() {
     if (!response.ok) {
       throw new Error('Failed to fetch data');
     }
-    const data = await response.json();
+    const data: WeatherData = await response.json();
     return data;
   } catch (error) {
     console.error(error);

@@ -7,52 +7,71 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 
-// Generate Order Data
 function createData(
   id: number,
-  date: string,
-  name: string,
-  shipTo: string,
-  paymentMethod: string,
-  amount: number
+  time: string,
+  country: string,
+  city: string,
+  precipitation: string,
+  soilMoisture: string,
+  wind: string,
+  temperature: string
 ) {
-  return { id, date, name, shipTo, paymentMethod, amount };
+  return {
+    id,
+    time,
+    country,
+    city,
+    precipitation,
+    soilMoisture,
+    wind,
+    temperature,
+  };
 }
-
-const rows = [
-  createData(0, "10:30 AM", "Brazil", "Sao Paulo", "Sunny", 28),
-  createData(1, "02:45 PM", "Japan", "Tokyo", "Cloudy", 22),
-  createData(2, "09:15 AM", "Germany", "Berlin", "Rainy", 15),
-  createData(3, "05:00 PM", "Australia", "Sydney", "Sunny", 30),
-  createData(4, "08:20 AM", "Canada", "Toronto", "Snowy", -5),
-];
 
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
-export default function Orders() {
+const Orders = (data: any) => {
+  const rows = [
+    createData(
+      0,
+      data.time,
+      data.country,
+      data.city,
+      data.precipitation,
+      data.soilMoisture,
+      data.wind,
+      data.temperature
+    ),
+  ];
+
   return (
     <React.Fragment>
-      <Title>Current weather in other countries</Title>
+      <Title>Current conditions in other countries</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Time</TableCell>
             <TableCell>Country</TableCell>
             <TableCell>City</TableCell>
-            <TableCell>Weather</TableCell>
-            <TableCell align="right">Temperature</TableCell>
+            <TableCell>Precipitation</TableCell>
+            <TableCell>Soil Moisture</TableCell>
+            <TableCell>Wind</TableCell>
+            <TableCell>Temperature</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`${row.amount}`}</TableCell>
+              <TableCell>{row.time}</TableCell>
+              <TableCell>{row.country}</TableCell>
+              <TableCell>{row.city}</TableCell>
+              <TableCell>{row.precipitation}</TableCell>
+              <TableCell>{row.soilMoisture}</TableCell>
+              <TableCell>{row.wind}</TableCell>
+              <TableCell>{row.temperature}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -62,4 +81,6 @@ export default function Orders() {
       </Link>
     </React.Fragment>
   );
-}
+};
+
+export default Orders;
