@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
+import ApiTesting from "../../apiTesting";
 
 const drawerWidth: number = 240;
 
@@ -130,6 +131,7 @@ const Dashboard = (data: any) => {
             {secondaryListItems}
           </List>
         </Drawer>
+        <ApiTesting data={data} />
         <Box
           component="main"
           sx={{
