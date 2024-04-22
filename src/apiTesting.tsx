@@ -1,3 +1,5 @@
+//here were getting al the data and displaying it in a table. the data is already fetched and formatted in json so we can access
+//it directly with item.attribute
 const ApiTesting = (data: any) => {
   return (
     <div>
