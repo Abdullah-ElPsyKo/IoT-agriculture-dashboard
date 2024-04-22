@@ -5,6 +5,7 @@ export async function fetchData() {
     if (!response.ok) {
       throw new Error('Failed to fetch data');
     }
+    //here im converting the data to json so we can use it in the components
     const data = await response.json();
     return data;
   } catch (error) {

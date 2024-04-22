@@ -1,3 +1,4 @@
+//this are the attributes of the data that is coming in
 interface WeatherData {
   id: number;
   date: string;
