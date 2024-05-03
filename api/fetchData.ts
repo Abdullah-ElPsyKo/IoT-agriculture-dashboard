@@ -1,14 +1,15 @@
-export async function fetchData() {
-  try {
-    //get backend data
-    const response = await fetch('https://api.example.com/data');
-    if (!response.ok) {
-      throw new Error('Failed to fetch data');
-    }
-    //here im converting the data to json so we can use it in the components
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-}
+const fetchData = () => {
+  return fetch('https://your-backend-url.com/data-endpoint')
+   .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error status: ${response.status}`);
+      }
+      return response.json();
+    })
+   .catch(error => {
+      console.error("Failed to fetch data:", error);
+      return Promise.reject(error);
+    });
+};
+
+export default fetchData;
