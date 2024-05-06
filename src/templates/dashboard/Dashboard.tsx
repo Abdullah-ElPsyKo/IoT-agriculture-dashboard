@@ -72,7 +72,12 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme();
 
-const Dashboard = (data: any) => {
+interface DashboardProps {
+  data: any;
+  error?: Error; // Make error prop optional
+}
+
+const Dashboard = ({ data, error }: DashboardProps) => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -131,7 +136,8 @@ const Dashboard = (data: any) => {
             {secondaryListItems}
           </List>
         </Drawer>
-        <ApiTesting data={data} />
+        {/* Conditionally render error message */}
+        {error && <p>Error: {error.message}</p>}
         <Box
           component="main"
           sx={{
@@ -147,7 +153,6 @@ const Dashboard = (data: any) => {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
