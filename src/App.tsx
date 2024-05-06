@@ -1,36 +1,30 @@
 import { useEffect, useState } from "react";
 import Dashboard from "./templates/dashboard/Dashboard";
-import fetchData from ".././api/fetchData";
+import fetchData from "../api/fetchData";
 import Error from "./components/Error";
 
 const App = () => {
   const [data, setData] = useState(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData()
       .then((fetchedData) => {
-        // here were getting the fetched data and setting it to the state so we can pass it to the components as soon as the page loads
         setData(fetchedData);
-        setError(null); //clear the error state if data is successfully fetched
+        setError(null);
       })
       .catch((fetchError) => {
-        setError(fetchError); //set the error state if there's an error
+        setError(fetchError);
       });
   }, []);
 
-  if (error) {
-    // Render the error page or a message
-    return <Error error={error} />;
-  }
-
-  if (!data) {
-    return <div>Loading...</div>; // Or any loading indicator
-  }
-
   return (
     <>
+      {/* Render the Dashboard component */}
       <Dashboard data={data} />
+
+      {/* Render the error component if there's an error */}
+      <Error error={error} />
     </>
   );
 };
