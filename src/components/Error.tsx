@@ -1,22 +1,25 @@
-import { Typography } from "@mui/material";
+import React, { useEffect, useRef } from "react";
 
-const Error = ({ error }: { error: any }) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        flexDirection: "column",
-      }}
-    >
-      <Typography variant="h1" style={{ color: "red" }}>
-        Error!
-      </Typography>
-      <Typography variant="h5">{error.message}</Typography>
-    </div>
-  );
+interface ErrorProps {
+  error: Error | null;
+}
+
+const Error = ({ error }: ErrorProps) => {
+  const alertShown = useRef(false);
+
+  useEffect(() => {
+    if (error && !alertShown.current) {
+      alert(
+        "There seems to be a problem please try again later" +
+          "\n" +
+          error.message
+      );
+      alertShown.current = true;
+    }
+  }, [error]);
+
+  // Return null as we don't want to render anything in the DOM
+  return null;
 };
 
 export default Error;
