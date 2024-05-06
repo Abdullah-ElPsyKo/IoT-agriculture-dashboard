@@ -18,7 +18,6 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
-import ApiTesting from "../../apiTesting";
 
 const drawerWidth: number = 240;
 
