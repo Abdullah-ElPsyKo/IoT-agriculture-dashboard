@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  backend:
+    build: ./BACKEND
+    ports:
+      - "5000:5000"
+    environment:
+      SECRET_KEY: YourSuperSecretKeyHere
+      DATABASE_URL: postgresql://user:password@db/yourdbname
+    depends_on:
+      - db
+    volumes:
+      - ./BACKEND:/app
+    networks:
+      - mynetwork
+
+  frontend:
+    build:
+      context: ./FRONTEND  # Path to the directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - mynetwork
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: yourdbname
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+volumes:
+  pgdata:
+
+networks:
+  mynetwork:
+    driver: bridge
