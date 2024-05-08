@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./BACKEND:/app
+      - ./BACKEND:/app  # Only mount necessary directories
     networks:
       - mynetwork
 

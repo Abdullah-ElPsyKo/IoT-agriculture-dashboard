@@ -12,15 +12,23 @@ RUN apt-get update && \
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+ENV PYTHONDONTWRITEBYTECODE 1
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# Copy entrypoint script into the container and make it executable
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Create entrypoint script directly in the image and make it executable
+RUN echo '#!/bin/bash\n\
+echo "Waiting for postgres..."\n\
+while ! nc -z db 5432; do\n\
+  sleep 0.1\n\
+done\n\
+echo "PostgreSQL started"\n\
+flask db upgrade\n\
+exec "$@"' > /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Define environment variable
 ENV NAME World
