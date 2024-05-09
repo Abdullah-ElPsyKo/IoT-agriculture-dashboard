@@ -1,16 +1,15 @@
 version: '3.8'
 services:
   backend:
-    build: ./BACKEND
+    build: ./BACKEND  # Update the path to where your Node.js app's Dockerfile is located
     ports:
-      - "5000:5000"
+      - "3000:3000"  # Changed from 5000 to 3000 to reflect common Node.js defaults
     environment:
-      SECRET_KEY: YourSuperSecretKeyHere
-      DATABASE_URL: postgresql://user:password@db/yourdbname
+      - DATABASE_URL=postgresql://user:password@db/yourdbname  # This might not be necessary if you configure DB connections within your Node.js app
     depends_on:
       - db
     volumes:
-      - ./BACKEND:/app  # Only mount necessary directories
+      - ./BACKEND:/app
     networks:
       - mynetwork
 
