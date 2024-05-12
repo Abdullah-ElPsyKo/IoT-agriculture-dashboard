@@ -2,10 +2,11 @@
 interface WeatherData {
   id: number;
   date: string;
+  country: string;
   city: string;
   temperature: string;
   precipitation: string;
-  soil_moisture: string;
+  soilMoisture: string;
   winds: string;
 }
 
