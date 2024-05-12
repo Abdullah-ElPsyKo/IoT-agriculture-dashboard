@@ -3,36 +3,58 @@ import { useTheme } from "@mui/material/styles";
 import { LineChart, axisClasses } from "@mui/x-charts";
 import { ChartsTextStyle } from "@mui/x-charts/ChartsText";
 import Title from "./Title";
+import fetchData from "../../../api/fetchData";
 
-//generate Sales Data
-function createData(
-  time: string,
-  amount?: number
-): { time: string; amount: number | null } {
-  return { time, amount: amount ?? null };
+// Define types/interfaces for your data
+interface WeatherData {
+  id: number;
+  date: string;
+  city: string;
+  temperature: number;
+  precipitation: number;
+  soil_moisture: number;
+  winds: number;
 }
 
-const Chart = (data: any) => {
+const Chart = () => {
   const theme = useTheme();
+  const [chartData, setChartData] = React.useState<
+    { time: string; amount: number | null }[]
+  >([]);
 
-  const chartData = [
-    createData("Jan", 10),
-    createData("Feb", 13),
-    createData("Mar", 15),
-    createData("Apr", 17),
-    createData("May", 20),
-    createData("Jun", 24),
-    createData("Jul", 28),
-    createData("Aug", 28),
-    createData("Sep", 25),
-    createData("Oct", 20),
-    createData("Nov", 16),
-    createData("Dec", 13),
-  ];
+  React.useEffect(() => {
+    fetchData()
+      .then((data: WeatherData[]) => {
+        const monthlyAverages: { time: string; amount: number }[] = [];
+        const dataByMonth: { [month: string]: number[] } = {};
+
+        // Group data by month
+        data.forEach((entry) => {
+          const month = new Date(entry.date).toLocaleString("default", {
+            month: "short",
+          });
+          if (!dataByMonth[month]) {
+            dataByMonth[month] = [];
+          }
+          dataByMonth[month].push(entry.temperature); // Adjust to the desired attribute
+        });
+
+        // Calculate average temperature for each month
+        for (const month in dataByMonth) {
+          const averageTemperature =
+            dataByMonth[month].reduce((acc, val) => acc + val, 0) /
+            dataByMonth[month].length;
+          monthlyAverages.push({ time: month, amount: averageTemperature });
+        }
+
+        setChartData(monthlyAverages);
+      })
+      .catch((error: Error) => console.error("Failed to fetch data:", error));
+  }, []);
 
   return (
     <React.Fragment>
-      <Title>Monthly average, {data.country}</Title>
+      <Title>Monthly average temperature</Title>
       <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
         <LineChart
           dataset={chartData}

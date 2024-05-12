@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "@mui/material/Link";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,46 +6,30 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
+import fetchData from "../../../api/fetchData";
+import WeatherData from "../../../api/types";
 
-function createData(
-  id: number,
-  time: string,
-  country: string,
-  city: string,
-  precipitation: string,
-  soilMoisture: string,
-  wind: string,
-  temperature: string
-) {
-  return {
-    id,
-    time,
-    country,
-    city,
-    precipitation,
-    soilMoisture,
-    wind,
-    temperature,
-  };
-}
+const WeatherInfo = () => {
+  const [data, setData] = useState<WeatherData[]>([]);
 
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
-
-const Orders = (data: any) => {
-  const rows = [
-    createData(
-      0,
-      data.time,
-      data.country,
-      data.city,
-      data.precipitation,
-      data.soilMoisture,
-      data.wind,
-      data.temperature
-    ),
-  ];
+  useEffect(() => {
+    fetchData()
+      .then((fetchedData: WeatherData[]) => {
+        // Group data by date, hour, and city
+        const groupedData: { [key: string]: WeatherData } = {};
+        fetchedData.forEach((entry) => {
+          const date = new Date(entry.date);
+          const formattedDate = `${date.toLocaleDateString()} ${date.getHours()}:00`; // Display only date and hours
+          const key = `${formattedDate} ${entry.city}`;
+          // Only keep the first entry for each combination of date, hour, and city
+          if (!groupedData[key]) {
+            groupedData[key] = entry;
+          }
+        });
+        setData(Object.values(groupedData));
+      })
+      .catch((error: Error) => console.error("Failed to fetch data:", error));
+  }, []);
 
   return (
     <React.Fragment>
@@ -53,7 +37,7 @@ const Orders = (data: any) => {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Time</TableCell>
+            <TableCell>Date/Time</TableCell>
             <TableCell>Country</TableCell>
             <TableCell>City</TableCell>
             <TableCell>Precipitation</TableCell>
@@ -63,24 +47,34 @@ const Orders = (data: any) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {data.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.time}</TableCell>
-              <TableCell>{row.country}</TableCell>
+              <TableCell>
+                {new Date(row.date).toLocaleDateString()}{" "}
+                {new Date(row.date).getHours()}:00
+              </TableCell>
+              {/* ^ Display only date and hours */}
               <TableCell>{row.city}</TableCell>
-              <TableCell>{row.precipitation}</TableCell>
-              <TableCell>{row.soilMoisture}</TableCell>
-              <TableCell>{row.wind}</TableCell>
-              <TableCell>{row.temperature}</TableCell>
+              {/*  ^ change this row.city to row.country if we have country in database */}
+              <TableCell>{row.city}</TableCell>
+              <TableCell>{parseFloat(row.precipitation).toFixed(2)}</TableCell>
+              <TableCell>{parseFloat(row.soil_moisture).toFixed(2)}</TableCell>
+              <TableCell>{parseFloat(row.winds).toFixed(2)}</TableCell>
+              <TableCell>{parseFloat(row.temperature).toFixed(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+      <Link
+        color="primary"
+        href="#"
+        onClick={(event) => event.preventDefault()}
+        sx={{ mt: 3 }}
+      >
         See other countries
       </Link>
     </React.Fragment>
   );
 };
 
-export default Orders;
+export default WeatherInfo;

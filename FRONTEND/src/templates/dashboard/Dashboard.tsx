@@ -76,7 +76,7 @@ interface DashboardProps {
   error?: Error; // Make error prop optional
 }
 
-const Dashboard = ({ data, error }: DashboardProps) => {
+const Dashboard = ({ error }: DashboardProps) => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -161,7 +161,7 @@ const Dashboard = ({ data, error }: DashboardProps) => {
                     height: 240,
                   }}
                 >
-                  <Chart data={data} />
+                  <Chart />
                 </Paper>
               </Grid>
               <Grid item xs={12} md={4} lg={3}>
