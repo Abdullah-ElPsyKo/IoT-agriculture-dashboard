@@ -9,7 +9,7 @@ const fetchData = () => {
     })
     .then((data) => {
       console.log("Data from the database:", data);
-      return data; 
+      return data;
     })
     .catch((error) => {
       console.error("Failed to fetch data:", error);
