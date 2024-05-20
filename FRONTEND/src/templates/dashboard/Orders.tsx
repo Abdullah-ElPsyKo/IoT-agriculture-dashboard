@@ -40,7 +40,6 @@ const WeatherInfo = () => {
             <TableCell>Date/Time</TableCell>
             <TableCell>Country</TableCell>
             <TableCell>City</TableCell>
-            <TableCell>Precipitation</TableCell>
             <TableCell>Soil Moisture</TableCell>
             <TableCell>Wind</TableCell>
             <TableCell>Temperature</TableCell>
@@ -57,7 +56,6 @@ const WeatherInfo = () => {
               <TableCell>{row.country}</TableCell>
               {/*  ^ change this row.city to row.country if we have country in database */}
               <TableCell>{row.city}</TableCell>
-              <TableCell>{parseFloat(row.precipitation).toFixed(2)}</TableCell>
               <TableCell>{parseFloat(row.soilMoisture).toFixed(2)}</TableCell>
               <TableCell>{parseFloat(row.winds).toFixed(2)}</TableCell>
               <TableCell>{parseFloat(row.temperature).toFixed(2)}</TableCell>
