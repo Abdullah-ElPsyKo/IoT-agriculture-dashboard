@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
+import APIDeposits from "./APIDeposits";
 
 const drawerWidth: number = 240;
 
@@ -150,30 +151,35 @@ const Dashboard = ({ error }: DashboardProps) => {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={8} lg={9}>
+          <Container maxWidth="lg" sx={{ mt: 1, mb: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6} lg={7}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 345,
                   }}
                 >
                   <Chart />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={4} lg={3}>
+              <Grid item xs={12} md={3} lg={2.5}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 345,
                   }}
                 >
                   <Deposits />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={3} lg={2.5}>
+                <Paper>
+                  <APIDeposits />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
