@@ -31,7 +31,6 @@ module.exports = (sequelize) => {
     country: DataTypes.STRING,
     city: DataTypes.STRING,
     temperature: DataTypes.FLOAT,
-    precipitation: DataTypes.FLOAT,
     soilMoisture: DataTypes.FLOAT,
     winds: DataTypes.FLOAT,
   }, {
@@ -47,7 +46,6 @@ module.exports = (sequelize) => {
         country: country.name,
         city: city,
         temperature: Math.random() * 35,
-        precipitation: Math.random() * 100,
         soilMoisture: Math.random() * 100,
         winds: Math.random() * 100
       };
