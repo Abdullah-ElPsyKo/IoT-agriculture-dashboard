@@ -33,7 +33,8 @@ const Deposits = () => {
       {weatherData && (
         <React.Fragment>
           <Typography component="p" variant="h4">
-            {parseFloat(weatherData.temperature).toFixed(2)}°C
+            {parseFloat(weatherData.temperature).toFixed(2)}°C{"   "}
+            {parseFloat(weatherData.soilMoisture).toFixed(2)}% soil moisture
           </Typography>
           <Typography color="text.secondary" sx={{ flex: 1 }}>
             {new Date(weatherData.date).toLocaleDateString()}
