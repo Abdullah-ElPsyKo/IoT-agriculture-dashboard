@@ -1,13 +1,4 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
-import Title from "./Title";
-import fetchData from "../../../api/fetchData";
-import WeatherData from "../../../api/types";
-
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
 
 const APIDeposits = () => {
   React.useEffect(() => {
