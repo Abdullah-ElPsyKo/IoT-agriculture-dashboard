@@ -55,35 +55,36 @@ const Chart = () => {
       .catch((error: Error) => console.error("Failed to fetch data:", error));
   }, []);
 
-  React.useEffect(() => {
-    fetchData()
-      .then((data: WeatherData[]) => {
-        const filteredData = data.filter((item) => item.city === selectedCity);
+React.useEffect(() => {
+  fetchData()
+    .then((data: WeatherData[]) => {
+      const filteredData = data.filter((item) => item.city === selectedCity);
 
-        const monthlyAverages: { time: string; amount: number }[] = [];
-        const dataByMonth: { [month: string]: number[] } = {};
+      const monthlyAverages: { time: string; amount: number }[] = [];
+      const dataByMonth: { [month: string]: number[] } = {};
 
-        filteredData.forEach((entry) => {
-          const month = new Date(entry.date).toLocaleString("default", {
-            month: "short",
-          });
-          if (!dataByMonth[month]) {
-            dataByMonth[month] = [];
-          }
-          dataByMonth[month].push(entry.temperature);
+      filteredData.forEach((entry) => {
+        const month = new Date(entry.date).toLocaleString("default", {
+          month: "short",
         });
-
-        for (const month in dataByMonth) {
-          const averageTemperature =
-            dataByMonth[month].reduce((acc, val) => acc + val, 0) /
-            dataByMonth[month].length;
-          monthlyAverages.push({ time: month, amount: averageTemperature });
+        if (!dataByMonth[month]) {
+          dataByMonth[month] = [];
         }
+        dataByMonth[month].push(entry.temperature);
+      });
 
-        setChartData(monthlyAverages);
-      })
-      .catch((error: Error) => console.error("Failed to fetch data:", error));
-  }, [selectedCity]);
+      for (const month in dataByMonth) {
+        const averageTemperature =
+          dataByMonth[month].reduce((acc, val) => acc + val, 0) /
+          dataByMonth[month].length;
+        monthlyAverages.push({ time: month, amount: averageTemperature });
+      }
+
+      setChartData(monthlyAverages);
+    })
+    .catch((error: Error) => console.error("Failed to fetch data:", error));
+}, [selectedCity]);
+
 
   return (
     <React.Fragment>
