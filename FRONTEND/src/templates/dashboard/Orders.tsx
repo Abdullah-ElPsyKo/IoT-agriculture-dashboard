@@ -15,6 +15,11 @@ const WeatherInfo = () => {
   useEffect(() => {
     fetchData()
       .then((fetchedData: WeatherData[]) => {
+        // Sort fetched data by date (earliest first)
+        fetchedData.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+
         // Group data by date, hour, and city
         const groupedData: { [key: string]: WeatherData } = {};
         fetchedData.forEach((entry) => {
