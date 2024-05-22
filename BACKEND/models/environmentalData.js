@@ -27,9 +27,19 @@ module.exports = (sequelize) => {
   }
 
   const EnvironmentalData = sequelize.define('EnvironmentalData', {
-    date: DataTypes.DATE,
-    country: DataTypes.STRING,
-    city: DataTypes.STRING,
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     temperature: DataTypes.FLOAT,
     soilMoisture: DataTypes.FLOAT,
     winds: DataTypes.FLOAT,

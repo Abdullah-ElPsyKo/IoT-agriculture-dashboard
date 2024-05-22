@@ -5,10 +5,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 app.use(bodyParser.json());
-app.use(cors()); // Add this line to enable CORS for all routes
+app.use(cors()); // Enable CORS for all routes
 
 const EnvironmentalData = require('./models/environmentalData')(sequelize);
 
+// GET route to fetch all data
 app.get('/all_data', async (req, res) => {
   try {
     const data = await EnvironmentalData.findAll();
@@ -19,6 +20,33 @@ app.get('/all_data', async (req, res) => {
   }
 });
 
+// POST route to add new data
+app.post('/add_data', async (req, res) => {
+  try {
+    const { country, city, temperature, soilMoisture, winds } = req.body;
+    // Validate the data
+    if (!country || !city) {
+      return res.status(400).send('Missing required fields: country, or city');
+    }
+    // Explicitly set the date to the current date and time
+    const data = {
+      date: new Date(),
+      country,
+      city,
+      temperature,
+      soilMoisture,
+      winds
+    };
+    console.log(data);
+    await EnvironmentalData.create(data);
+    res.send('Data added successfully');
+  } catch (error) {
+    console.error('Error adding data:', error);
+    res.status(500).send('Error adding data');
+  }
+});
+
+// Sync database and start server
 syncDatabase().then(() => {
   app.listen(3000, () => {
     console.log('Server running on http://localhost:3000');
