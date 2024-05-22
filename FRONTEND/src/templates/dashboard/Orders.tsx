@@ -9,8 +9,13 @@ import Title from "./Title";
 import fetchData from "../../../api/fetchData";
 import WeatherData from "../../../api/types";
 
-const WeatherInfo = () => {
+interface OrdersProps {
+  showCurrentCityOnly?: boolean; // Add a prop to control what data to show
+}
+
+const Orders: React.FC<OrdersProps> = ({ showCurrentCityOnly = false }) => {
   const [data, setData] = useState<WeatherData[]>([]);
+  const [currentCity, setCurrentCity] = useState<string>("");
 
   useEffect(() => {
     fetchData()
@@ -31,14 +36,30 @@ const WeatherInfo = () => {
             groupedData[key] = entry;
           }
         });
+
+        // Set current city to the city of the first entry (assuming fetchedData is not empty)
+        //CHANGE THIS CODE TO MAKE IT SO THAT IT USES THE LOCATION AND NOT THE FIRST ENTRY!!!!
+        if (fetchedData.length > 0) {
+          setCurrentCity(fetchedData[0].city);
+        }
+
         setData(Object.values(groupedData));
       })
       .catch((error: Error) => console.error("Failed to fetch data:", error));
   }, []);
 
+  // Filter data if showCurrentCityOnly is true
+  const filteredData = showCurrentCityOnly
+    ? data.filter((row) => row.city === currentCity) // Show all entries for the current city
+    : data;
+
   return (
     <React.Fragment>
-      <Title>Current conditions in other countries</Title>
+      <Title>
+        {showCurrentCityOnly
+          ? `Current conditions in ${currentCity}`
+          : "Current conditions in other countries"}
+      </Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -51,7 +72,7 @@ const WeatherInfo = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {filteredData.map((row) => (
             <TableRow key={row.id}>
               <TableCell>
                 {new Date(row.date).toLocaleDateString()}{" "}
@@ -78,4 +99,4 @@ const WeatherInfo = () => {
   );
 };
 
-export default WeatherInfo;
+export default Orders;
