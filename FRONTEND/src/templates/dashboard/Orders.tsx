@@ -24,7 +24,7 @@ const WeatherInfo = () => {
         const groupedData: { [key: string]: WeatherData } = {};
         fetchedData.forEach((entry) => {
           const date = new Date(entry.date);
-          const formattedDate = `${date.toLocaleDateString()} ${date.getHours()}:00`; // Display only date and hours
+          const formattedDate = `${date.toLocaleDateString()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`; // Display date, hours, minutes, and seconds
           const key = `${formattedDate} ${entry.city}`;
           // Only keep the first entry for each combination of date, hour, and city
           if (!groupedData[key]) {
@@ -55,15 +55,13 @@ const WeatherInfo = () => {
             <TableRow key={row.id}>
               <TableCell>
                 {new Date(row.date).toLocaleDateString()}{" "}
-                {new Date(row.date).getHours()}:00
+                {new Date(row.date).toLocaleTimeString()}
               </TableCell>
-              {/* ^ Display only date and hours */}
               <TableCell>{row.country}</TableCell>
-              {/*  ^ change this row.city to row.country if we have country in database */}
               <TableCell>{row.city}</TableCell>
-              <TableCell>{parseFloat(row.soilMoisture).toFixed(2)}</TableCell>
-              <TableCell>{parseFloat(row.winds).toFixed(2)}</TableCell>
-              <TableCell>{parseFloat(row.temperature).toFixed(2)}</TableCell>
+              <TableCell>{parseFloat(row.soilMoisture).toFixed(2)} %</TableCell>
+              <TableCell>{parseFloat(row.winds).toFixed(2)} km/h</TableCell>
+              <TableCell>{parseFloat(row.temperature).toFixed(2)} °C</TableCell>
             </TableRow>
           ))}
         </TableBody>
