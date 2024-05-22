@@ -1,7 +1,9 @@
+// src/App.tsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Dashboard from "./templates/dashboard/Dashboard";
 import Integrations from "./templates/integrations/Integrations";
+import History from "./templates/integrations/history";
 import fetchData from "../api/fetchData";
 import Error from "./components/Error";
 
@@ -27,6 +29,7 @@ const App = () => {
           {/* Define routes */}
           <Route path="/" element={<Dashboard data={data} />} />
           <Route path="/integrations" element={<Integrations />} />
+          <Route path="/history" element={<History />} />
         </Routes>
         <Error error={error} />
       </>
