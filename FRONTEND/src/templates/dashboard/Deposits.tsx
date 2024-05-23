@@ -19,14 +19,12 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   const [cities, setCities] = React.useState<string[]>([]);
   const navigate = useNavigate();
 
-  // Fetch data once and store it
   React.useEffect(() => {
     fetchData()
       .then((data: WeatherData[]) => {
         if (data && data.length > 0) {
           const uniqueCities = [...new Set(data.map((item) => item.city))];
           setCities(uniqueCities);
-          // Initially set the latest data
           const latestDate = data.reduce((latest, current) =>
             new Date(current.date) > new Date(latest.date) ? current : latest
           );
@@ -34,9 +32,8 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
         }
       })
       .catch((error: Error) => console.error("Failed to fetch data:", error));
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
-  // Filter data based on selected city
   React.useEffect(() => {
     if (selectedCity) {
       fetchData()
@@ -78,27 +75,57 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
     <React.Fragment>
       <Title>
         Current Weather,{" "}
-        {weatherData ? `${weatherData.city}, ${weatherData.date}` : ""}
+        {weatherData
+          ? `${weatherData.city}, ${new Date(
+              weatherData.date
+            ).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}`
+          : ""}
       </Title>
       {renderDropdown()}
       {weatherData && (
         <React.Fragment>
-          <Typography component="p" variant="h5">
+          <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
+            {" "}
+            {/* Adjusted font size */}
             Temperature: {parseFloat(weatherData.temperature).toFixed(2)}°C
           </Typography>
-          <Typography component="p" variant="h5">
+          <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
+            {" "}
+            {/* Adjusted font size */}
             Soil Moisture: {parseFloat(weatherData.soilMoisture).toFixed(2)}%
           </Typography>
-          <Typography component="p" variant="h5">
+          <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
+            {" "}
+            {/* Adjusted font size */}
             Wind Speed: {parseFloat(weatherData.winds).toFixed(2)} km/h
           </Typography>
-          <Typography color="text.secondary" sx={{ flex: 1 }}>
-            {new Date(weatherData.date).toLocaleDateString()}
+          <Typography
+            color="text.secondary"
+            sx={{ flex: 1, fontSize: "0.75rem" }}
+          >
+            {" "}
+            {/* Adjusted font size */}
+            {new Date(weatherData.date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
           </Typography>
         </React.Fragment>
       )}
       <div>
-        <Link color="primary" href="#" onClick={handleLinkClick}>
+        <Link
+          color="primary"
+          href="#"
+          onClick={handleLinkClick}
+          sx={{ fontSize: "0.875rem" }}
+        >
+          {" "}
+          {/* Adjusted font size */}
           {isHistoryPage ? "Go back" : "View history"}
         </Link>
       </div>

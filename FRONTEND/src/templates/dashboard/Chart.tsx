@@ -111,8 +111,14 @@ const Chart = () => {
 
   return (
     <React.Fragment>
-      <Title>Monthly average temperature</Title>
-      <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          flexDirection: "row",
+        }}
+      >
+        <Title>Monthly average temperature</Title>
         <select
           value={selectedCity}
           onChange={(e) => setSelectedCity(e.target.value)}
@@ -124,6 +130,9 @@ const Chart = () => {
             </option>
           ))}
         </select>
+      </div>
+
+      <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
         <LineChart
           dataset={chartData}
           margin={{
@@ -138,6 +147,10 @@ const Chart = () => {
               dataKey: "time",
               tickNumber: 2,
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
+              ...(chartData &&
+                chartData.length === 0 && {
+                  dataKey: "monthNames",
+                }),
             },
           ]}
           yAxis={[
