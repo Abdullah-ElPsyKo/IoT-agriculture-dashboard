@@ -1,29 +1,42 @@
-version: '3.8'
+version: '3.3'
+
 services:
   backend:
-    build: ./BACKEND  # Update the path to where your Node.js app's Dockerfile is located
+    build: ./BACKEND
     ports:
-      - "3000:3000"  # Changed from 5000 to 3000 to reflect common Node.js defaults
+      - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://user:password@db/yourdbname  # This might not be necessary if you configure DB connections within your Node.js app
+      - DATABASE_URL=postgresql://user:password@db/yourdbname
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`s140639.devops-ap.be`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=3000"
+      - "traefik.docker.network=web"
     depends_on:
       - db
     volumes:
       - ./BACKEND:/app
     networks:
-      - mynetwork
+      - web
 
   frontend:
     build:
-      context: ./FRONTEND  # Path to the directory containing the Dockerfile
+      context: ./FRONTEND
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:80"  # Change to "8080:80" to avoid conflict
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`s140639.devops-ap.be`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.docker.network=web"
     networks:
-      - mynetwork
+      - web
 
   db:
     image: postgres
@@ -36,11 +49,11 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - mynetwork
+      - web
 
 volumes:
   pgdata:
 
 networks:
-  mynetwork:
-    driver: bridge
+  web:
+    external: true
