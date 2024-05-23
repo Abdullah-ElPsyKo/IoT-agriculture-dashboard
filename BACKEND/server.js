@@ -9,8 +9,11 @@ app.use(cors()); // Enable CORS for all routes
 
 const EnvironmentalData = require('./models/environmentalData')(sequelize);
 
+// Maak een nieuwe router aan
+const router = express.Router();
+
 // GET route to fetch all data
-app.get('/all_data', async (req, res) => {
+router.get('/all_data', async (req, res) => {
   try {
     const data = await EnvironmentalData.findAll();
     res.json(data);
@@ -21,7 +24,7 @@ app.get('/all_data', async (req, res) => {
 });
 
 // POST route to add new data
-app.post('/add_data', async (req, res) => {
+router.post('/add_data', async (req, res) => {
   try {
     const { country, city, temperature, soilMoisture, winds } = req.body;
     // Validate the data
@@ -45,6 +48,9 @@ app.post('/add_data', async (req, res) => {
     res.status(500).send('Error adding data');
   }
 });
+
+// Voeg de router toe aan je app met de '/api' prefix
+app.use('/api', router);
 
 // Sync database and start server
 syncDatabase().then(() => {
