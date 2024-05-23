@@ -23,6 +23,24 @@ const Chart = () => {
   const [selectedCity, setSelectedCity] = React.useState<string>("");
   const [cities, setCities] = React.useState<string[]>([]); // Store cities in state
 
+  function getMonthIndex(monthName: any) {
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return monthNames.indexOf(monthName);
+  }
+
   React.useEffect(() => {
     fetchData()
       .then((data: WeatherData[]) => {
@@ -55,35 +73,40 @@ const Chart = () => {
       .catch((error: Error) => console.error("Failed to fetch data:", error));
   }, []);
 
-React.useEffect(() => {
-  fetchData()
-    .then((data: WeatherData[]) => {
-      const filteredData = data.filter((item) => item.city === selectedCity);
+  React.useEffect(() => {
+    fetchData()
+      .then((data: WeatherData[]) => {
+        const filteredData = data.filter((item) => item.city === selectedCity);
 
-      const monthlyAverages: { time: string; amount: number }[] = [];
-      const dataByMonth: { [month: string]: number[] } = {};
+        const monthlyAverages: { time: string; amount: number }[] = [];
+        const dataByMonth: { [month: string]: number[] } = {};
 
-      filteredData.forEach((entry) => {
-        const month = new Date(entry.date).toLocaleString("default", {
-          month: "short",
+        filteredData.forEach((entry) => {
+          const month = new Date(entry.date).toLocaleString("default", {
+            month: "short",
+          });
+          if (!dataByMonth[month]) {
+            dataByMonth[month] = [];
+          }
+          dataByMonth[month].push(entry.temperature);
         });
-        if (!dataByMonth[month]) {
-          dataByMonth[month] = [];
+
+        for (const month in dataByMonth) {
+          const averageTemperature =
+            dataByMonth[month].reduce((acc, val) => acc + val, 0) /
+            dataByMonth[month].length;
+          monthlyAverages.push({ time: month, amount: averageTemperature });
         }
-        dataByMonth[month].push(entry.temperature);
-      });
 
-      for (const month in dataByMonth) {
-        const averageTemperature =
-          dataByMonth[month].reduce((acc, val) => acc + val, 0) /
-          dataByMonth[month].length;
-        monthlyAverages.push({ time: month, amount: averageTemperature });
-      }
+        // Sort the monthly averages by month name
+        monthlyAverages.sort(
+          (a, b) => getMonthIndex(a.time) - getMonthIndex(b.time)
+        );
 
-      setChartData(monthlyAverages);
-    })
-    .catch((error: Error) => console.error("Failed to fetch data:", error));
-}, [selectedCity]);
+        setChartData(monthlyAverages);
+      })
+      .catch((error: Error) => console.error("Failed to fetch data:", error));
+  }, [selectedCity]);
 
 
   return (

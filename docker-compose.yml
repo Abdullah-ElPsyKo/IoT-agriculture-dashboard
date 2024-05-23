@@ -7,12 +7,13 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://user:password@db/yourdbname
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`s140639.devops-ap.be`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.backend.entrypoints=web"
-      - "traefik.http.services.backend.loadbalancer.server.port=3000"
-      - "traefik.docker.network=web"
+    
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.backend.rule=Host(`s140639.devops-ap.be`) && PathPrefix(`/api`)"
+    #   - "traefik.http.routers.backend.entrypoints=web"
+    #   - "traefik.http.services.backend.loadbalancer.server.port=3000"
+    #   - "traefik.docker.network=web"
     depends_on:
       - db
     volumes:
