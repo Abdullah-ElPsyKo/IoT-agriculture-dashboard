@@ -1,5 +1,5 @@
 const fetchData = () => {
-  return fetch("http://localhost:3000/all_data")
+  return fetch("http://s140639.devops-ap.be/api/all_data")
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error status: ${response.status}`);
