@@ -5,7 +5,6 @@ import { ChartsTextStyle } from "@mui/x-charts/ChartsText";
 import Title from "./Title";
 import fetchData from "../../../api/fetchData";
 
-// Define types/interfaces for your data
 interface WeatherData {
   id: number;
   date: string;
@@ -21,6 +20,8 @@ const Chart = () => {
   const [chartData, setChartData] = React.useState<
     { time: string; amount: number | null }[]
   >([]);
+  const [selectedCity, setSelectedCity] = React.useState<string>("");
+  const [cities, setCities] = React.useState<string[]>([]); // Store cities in state
 
   React.useEffect(() => {
     fetchData()
@@ -28,7 +29,10 @@ const Chart = () => {
         const monthlyAverages: { time: string; amount: number }[] = [];
         const dataByMonth: { [month: string]: number[] } = {};
 
-        // Group data by month
+        // Extract unique cities and store them in state
+        const uniqueCities = [...new Set(data.map((item) => item.city))];
+        setCities(uniqueCities); // Update cities state
+
         data.forEach((entry) => {
           const month = new Date(entry.date).toLocaleString("default", {
             month: "short",
@@ -36,10 +40,9 @@ const Chart = () => {
           if (!dataByMonth[month]) {
             dataByMonth[month] = [];
           }
-          dataByMonth[month].push(entry.temperature); // Adjust to the desired attribute
+          dataByMonth[month].push(entry.temperature);
         });
 
-        // Calculate average temperature for each month
         for (const month in dataByMonth) {
           const averageTemperature =
             dataByMonth[month].reduce((acc, val) => acc + val, 0) /
@@ -52,10 +55,52 @@ const Chart = () => {
       .catch((error: Error) => console.error("Failed to fetch data:", error));
   }, []);
 
+React.useEffect(() => {
+  fetchData()
+    .then((data: WeatherData[]) => {
+      const filteredData = data.filter((item) => item.city === selectedCity);
+
+      const monthlyAverages: { time: string; amount: number }[] = [];
+      const dataByMonth: { [month: string]: number[] } = {};
+
+      filteredData.forEach((entry) => {
+        const month = new Date(entry.date).toLocaleString("default", {
+          month: "short",
+        });
+        if (!dataByMonth[month]) {
+          dataByMonth[month] = [];
+        }
+        dataByMonth[month].push(entry.temperature);
+      });
+
+      for (const month in dataByMonth) {
+        const averageTemperature =
+          dataByMonth[month].reduce((acc, val) => acc + val, 0) /
+          dataByMonth[month].length;
+        monthlyAverages.push({ time: month, amount: averageTemperature });
+      }
+
+      setChartData(monthlyAverages);
+    })
+    .catch((error: Error) => console.error("Failed to fetch data:", error));
+}, [selectedCity]);
+
+
   return (
     <React.Fragment>
       <Title>Monthly average temperature</Title>
       <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>
+        <select
+          value={selectedCity}
+          onChange={(e) => setSelectedCity(e.target.value)}
+        >
+          <option value="">Select a city...</option>
+          {cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
         <LineChart
           dataset={chartData}
           margin={{
@@ -98,7 +143,7 @@ const Chart = () => {
             [`.${axisClasses.root} text`]: {
               fill: theme.palette.text.secondary,
             },
-            [`& .${axisClasses.left} .${axisClasses.label}`]: {
+            [`&.${axisClasses.left}.${axisClasses.label}`]: {
               transform: "translateX(-25px)",
             },
           }}
