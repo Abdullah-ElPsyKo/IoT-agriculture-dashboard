@@ -42,7 +42,7 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   return (
     <React.Fragment>
       <Title>
-        Latest weather update,{" "}
+        Latest weather,{" "}
         {weatherData ? `${weatherData.country}, ${weatherData.city}` : ""}
       </Title>
       {weatherData && (
