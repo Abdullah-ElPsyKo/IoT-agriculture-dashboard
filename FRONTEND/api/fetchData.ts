@@ -1,4 +1,4 @@
-const fetchData = () => {
+const fetchAllData = () => {
   return fetch("http://s140639.devops-ap.be/api/all_data")
     .then((response) => {
       if (!response.ok) {
@@ -17,4 +17,4 @@ const fetchData = () => {
     });
 };
 
-export default fetchData;
+export default fetchAllData;
