@@ -19,20 +19,30 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   const [cities, setCities] = React.useState<string[]>([]);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    fetchData()
-      .then((data: WeatherData[]) => {
-        if (data && data.length > 0) {
-          const uniqueCities = [...new Set(data.map((item) => item.city))];
-          setCities(uniqueCities);
-          const latestDate = data.reduce((latest, current) =>
-            new Date(current.date) > new Date(latest.date) ? current : latest
-          );
-          setWeatherData(latestDate);
+React.useEffect(() => {
+  fetchData()
+    .then((data: WeatherData[]) => {
+      if (data && data.length > 0) {
+        const uniqueCities = [...new Set(data.map((item) => item.city))];
+        setCities(uniqueCities);
+
+        // Check if there are any unique cities
+        if (uniqueCities.length > 0) {
+          // Select the first city as the default
+          const firstCity = uniqueCities[0];
+
+          // Now, find the weather data for the first city
+          const firstCityData = data.find((item) => item.city === firstCity);
+
+          if (firstCityData) {
+            setWeatherData(firstCityData);
+          }
         }
-      })
-      .catch((error: Error) => console.error("Failed to fetch data:", error));
-  }, []);
+      }
+    })
+    .catch((error: Error) => console.error("Failed to fetch data:", error));
+}, []);
+
 
   React.useEffect(() => {
     if (selectedCity) {
