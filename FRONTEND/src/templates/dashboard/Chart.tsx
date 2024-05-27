@@ -15,99 +15,104 @@ interface WeatherData {
   winds: number;
 }
 
+const getMonthIndex = (monthName: string) => {
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  return monthNames.indexOf(monthName);
+};
+
+const sortMonthlyAverages = (
+  monthlyAverages: { time: string; amount: number }[]
+) => {
+  return monthlyAverages.sort(
+    (a, b) => getMonthIndex(a.time) - getMonthIndex(b.time)
+  );
+};
+
 const Chart = () => {
   const theme = useTheme();
   const [chartData, setChartData] = React.useState<
     { time: string; amount: number | null }[]
   >([]);
   const [selectedCity, setSelectedCity] = React.useState<string>("");
-  const [cities, setCities] = React.useState<string[]>([]); // Store cities in state
-
-  function getMonthIndex(monthName: any) {
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    return monthNames.indexOf(monthName);
-  }
+  const [cities, setCities] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     fetchData()
       .then((data: WeatherData[]) => {
-        const monthlyAverages: { time: string; amount: number }[] = [];
-        const dataByMonth: { [month: string]: number[] } = {};
-
-        // Extract unique cities and store them in state
+        const dataByMonth: { [month: string]: { sum: number; count: number } } =
+          {};
         const uniqueCities = [...new Set(data.map((item) => item.city))];
-        setCities(uniqueCities); // Update cities state
+        setCities(uniqueCities);
+
+        // Set the first city as the default selected city
+        if (uniqueCities.length > 0 && !selectedCity) {
+          setSelectedCity(uniqueCities[0]);
+        }
 
         data.forEach((entry) => {
           const month = new Date(entry.date).toLocaleString("default", {
             month: "short",
           });
           if (!dataByMonth[month]) {
-            dataByMonth[month] = [];
+            dataByMonth[month] = { sum: 0, count: 0 };
           }
-          dataByMonth[month].push(entry.temperature);
+          dataByMonth[month].sum += entry.temperature;
+          dataByMonth[month].count += 1;
         });
 
-        for (const month in dataByMonth) {
-          const averageTemperature =
-            dataByMonth[month].reduce((acc, val) => acc + val, 0) /
-            dataByMonth[month].length;
-          monthlyAverages.push({ time: month, amount: averageTemperature });
-        }
+        const monthlyAverages = Object.keys(dataByMonth).map((month) => ({
+          time: month,
+          amount: dataByMonth[month].sum / dataByMonth[month].count,
+        }));
 
-        setChartData(monthlyAverages);
+        setChartData(sortMonthlyAverages(monthlyAverages));
       })
       .catch((error: Error) => console.error("Failed to fetch data:", error));
-  }, []);
+  }, [selectedCity]);
 
   React.useEffect(() => {
+    if (!selectedCity) return;
+
     fetchData()
       .then((data: WeatherData[]) => {
         const filteredData = data.filter((item) => item.city === selectedCity);
 
-        const monthlyAverages: { time: string; amount: number }[] = [];
-        const dataByMonth: { [month: string]: number[] } = {};
+        const dataByMonth: { [month: string]: { sum: number; count: number } } =
+          {};
 
         filteredData.forEach((entry) => {
           const month = new Date(entry.date).toLocaleString("default", {
             month: "short",
           });
           if (!dataByMonth[month]) {
-            dataByMonth[month] = [];
+            dataByMonth[month] = { sum: 0, count: 0 };
           }
-          dataByMonth[month].push(entry.temperature);
+          dataByMonth[month].sum += entry.temperature;
+          dataByMonth[month].count += 1;
         });
 
-        for (const month in dataByMonth) {
-          const averageTemperature =
-            dataByMonth[month].reduce((acc, val) => acc + val, 0) /
-            dataByMonth[month].length;
-          monthlyAverages.push({ time: month, amount: averageTemperature });
-        }
+        const monthlyAverages = Object.keys(dataByMonth).map((month) => ({
+          time: month,
+          amount: dataByMonth[month].sum / dataByMonth[month].count,
+        }));
 
-        // Sort the monthly averages by month name
-        monthlyAverages.sort(
-          (a, b) => getMonthIndex(a.time) - getMonthIndex(b.time)
-        );
-
-        setChartData(monthlyAverages);
+        setChartData(sortMonthlyAverages(monthlyAverages));
       })
       .catch((error: Error) => console.error("Failed to fetch data:", error));
   }, [selectedCity]);
-
 
   return (
     <React.Fragment>
@@ -123,7 +128,6 @@ const Chart = () => {
           value={selectedCity}
           onChange={(e) => setSelectedCity(e.target.value)}
         >
-          <option value="">Select a city...</option>
           {cities.map((city) => (
             <option key={city} value={city}>
               {city}
@@ -145,12 +149,22 @@ const Chart = () => {
             {
               scaleType: "point",
               dataKey: "time",
-              tickNumber: 2,
+              tickNumber: 12,
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              ...(chartData &&
-                chartData.length === 0 && {
-                  dataKey: "monthNames",
-                }),
+              data: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+              ],
             },
           ]}
           yAxis={[
