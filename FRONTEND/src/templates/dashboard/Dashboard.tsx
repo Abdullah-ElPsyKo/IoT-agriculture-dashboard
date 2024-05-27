@@ -19,6 +19,7 @@ import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
 import APIDeposits from "./APIDeposits";
+import { Link } from "@mui/material";
 
 const drawerWidth: number = 240;
 
@@ -112,8 +113,19 @@ const Dashboard = ({ error }: DashboardProps) => {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              TerraByte
             </Typography>
+            <Link>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}
+              >
+                Dashboard
+              </Typography>
+            </Link>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
