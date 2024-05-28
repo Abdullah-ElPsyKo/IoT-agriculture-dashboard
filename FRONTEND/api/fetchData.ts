@@ -18,3 +18,28 @@ const fetchAllData = () => {
 };
 
 export default fetchAllData;
+
+export const fetchUniqueCities = async () => {
+  const response = await fetch("http://s140639.devops-ap.be/api/unique_cities");
+  if (!response.ok) {
+    throw new Error("Failed to fetch unique cities");
+  }
+  return response.json();
+};
+
+export const fetchLatestSCityData = async (city: string) => {
+  try {
+    const response = await fetch(
+      `http://s140639.devops-ap.be/api/latest_city_data/${city}`
+    );
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch data for the selected city: ${response.statusText}`
+      );
+    }
+    return response.json();
+  } catch (error) {
+    console.error(`Error fetching data for city ${city}:`, error);
+    throw error;
+  }
+};
