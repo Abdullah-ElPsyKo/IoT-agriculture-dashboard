@@ -93,7 +93,7 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
             Soil Moisture: {parseFloat(weatherData.soilMoisture).toFixed(2)}%
           </Typography>
           <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
-            Humidity: {parseFloat(weatherData.winds).toFixed(2)}%
+            Humidity: {parseFloat(weatherData.humidity).toFixed(2)}%
           </Typography>
           <Typography
             color="text.secondary"

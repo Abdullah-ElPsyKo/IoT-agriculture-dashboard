@@ -82,19 +82,40 @@ router.get('/latest_data/:number', async (req, res) => {
   }
 });
 
-// GET route to fetch the latest [number] of data entries for a specific city
-router.get('/latest_city_data/:city/:number', async (req, res) => {
-  const { city, number } = req.params;
+// GET route to fetch the latest data entries for a specific city with pagination
+router.get('/latest_city_data/:city/page/:page/limit/:limit', async (req, res) => {
+  const { city, page, limit } = req.params;
+
   try {
+    const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
     const data = await EnvironmentalData.findAll({
       where: { city },
       order: [['date', 'DESC']],
-      limit: parseInt(number, 10),
+      limit: parseInt(limit, 10),
+      offset: offset
     });
     res.json(data);
   } catch (error) {
-    console.error(`Error fetching latest ${number} data entries for city ${city}:`, error);
-    res.status(500).send(`Error fetching latest ${number} data entries for city ${city}`);
+    console.error(`Error fetching data for city ${city} with pagination:`, error);
+    res.status(500).send(`Error fetching data for city ${city}`);
+  }
+});
+
+// GET route to fetch data entries with pagination (not city-specific)
+router.get('/latest_data/page/:page/limit/:limit', async (req, res) => {
+  const { page, limit } = req.params;
+
+  try {
+    const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
+    const data = await EnvironmentalData.findAll({
+      order: [['date', 'DESC']],
+      limit: parseInt(limit, 10),
+      offset: offset
+    });
+    res.json(data);
+  } catch (error) {
+    console.error(`Error fetching data with pagination:`, error);
+    res.status(500).send('Error fetching data with pagination');
   }
 });
 
@@ -121,6 +142,26 @@ router.post('/add_data', async (req, res) => {
   } catch (error) {
     console.error('Error adding data:', error);
     res.status(500).send('Error adding data');
+  }
+});
+
+// GET route to fetch data from the last year
+router.get('/last_year_data', async (req, res) => {
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+  try {
+    const data = await EnvironmentalData.findAll({
+      where: {
+        date: {
+          [Op.gte]: oneYearAgo
+        }
+      }
+    });
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching last year data:', error);
+    res.status(500).send('Error fetching last year data');
   }
 });
 

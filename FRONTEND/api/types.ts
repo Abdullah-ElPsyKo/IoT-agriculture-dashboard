@@ -6,6 +6,7 @@ interface WeatherData {
   city: string;
   temperature: string;
   precipitation: string;
+  humidity: string;
   soilMoisture: string;
   winds: string;
 }
