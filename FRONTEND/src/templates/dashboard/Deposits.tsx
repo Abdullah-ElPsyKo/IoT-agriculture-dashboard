@@ -3,8 +3,9 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Title from "./Title";
 import { useNavigate } from "react-router-dom";
-import fetchData from "../../../api/fetchData";
 import WeatherData from "../../../api/types";
+import { fetchUniqueCities } from "../../../api/fetchData";
+import { fetchLatestSCityData } from "../../../api/fetchData";
 
 interface DepositsProps {
   showAllData?: boolean;
@@ -20,23 +21,23 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    fetchData()
-      .then((data: WeatherData[]) => {
-        if (data && data.length > 0) {
-          const uniqueCities = [...new Set(data.map((item) => item.city))];
-          setCities(uniqueCities);
-          const latestDate = data.reduce((latest, current) =>
-            new Date(current.date) > new Date(latest.date) ? current : latest
-          );
-          setWeatherData(latestDate);
+    fetchUniqueCities()
+      .then((uniqueCities) => {
+        setCities(uniqueCities);
+
+        // Set the first city as the default selected city
+        if (uniqueCities.length > 0 && !selectedCity) {
+          setSelectedCity(uniqueCities[0]);
         }
       })
-      .catch((error: Error) => console.error("Failed to fetch data:", error));
+      .catch((error: Error) =>
+        console.error("Failed to fetch unique cities:", error)
+      );
   }, []);
 
   React.useEffect(() => {
     if (selectedCity) {
-      fetchData()
+      fetchLatestSCityData(selectedCity)
         .then((data: WeatherData[]) => {
           data.sort(
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
