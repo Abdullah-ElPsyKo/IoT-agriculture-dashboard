@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { LineChart, axisClasses } from "@mui/x-charts";
 import { ChartsTextStyle } from "@mui/x-charts/ChartsText";
 import Title from "./Title";
-import fetchData from "../../../api/fetchData";
+import fetchData, { fetchUniqueCities } from "../../../api/fetchData";
 
 interface WeatherData {
   id: number;
@@ -50,11 +50,10 @@ const Chart = () => {
   const [cities, setCities] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    fetchData()
-      .then((data: WeatherData[]) => {
+    fetchUniqueCities()
+      .then((uniqueCities) => {
         const dataByMonth: { [month: string]: { sum: number; count: number } } =
           {};
-        const uniqueCities = [...new Set(data.map((item) => item.city))];
         setCities(uniqueCities);
 
         // Set the first city as the default selected city
@@ -62,7 +61,7 @@ const Chart = () => {
           setSelectedCity(uniqueCities[0]);
         }
 
-        data.forEach((entry) => {
+        uniqueCities.forEach((entry: any) => {
           const month = new Date(entry.date).toLocaleString("default", {
             month: "short",
           });
