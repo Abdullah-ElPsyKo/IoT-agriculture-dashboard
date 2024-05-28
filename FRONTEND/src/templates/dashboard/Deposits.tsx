@@ -4,8 +4,10 @@ import Typography from "@mui/material/Typography";
 import Title from "./Title";
 import { useNavigate } from "react-router-dom";
 import WeatherData from "../../../api/types";
-import { fetchUniqueCities } from "../../../api/fetchData";
-import { fetchLatestSCityData } from "../../../api/fetchData";
+import {
+  fetchUniqueCities,
+  fetchLatestSCityData,
+} from "../../../api/fetchData";
 
 interface DepositsProps {
   showAllData?: boolean;
@@ -33,38 +35,30 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
       .catch((error: Error) =>
         console.error("Failed to fetch unique cities:", error)
       );
-  }, []);
+  }, [selectedCity]);
 
   React.useEffect(() => {
     if (selectedCity) {
       fetchLatestSCityData(selectedCity)
-        .then((data: WeatherData[]) => {
-          data.sort(
-            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-          );
-          const filteredData = data.find((item) => item.city === selectedCity);
-          if (filteredData) {
-            setWeatherData(filteredData);
-          }
+        .then((data: WeatherData) => {
+          setWeatherData(data);
         })
         .catch((error: Error) => console.error("Failed to fetch data:", error));
     }
   }, [selectedCity]);
 
-  const renderDropdown = () => {
-    return (
-      <select
-        value={selectedCity}
-        onChange={(e) => setSelectedCity(e.target.value)}
-      >
-        {cities.map((city) => (
-          <option key={city} value={city}>
-            {city}
-          </option>
-        ))}
-      </select>
-    );
-  };
+  const renderDropdown = () => (
+    <select
+      value={selectedCity}
+      onChange={(e) => setSelectedCity(e.target.value)}
+    >
+      {cities.map((city) => (
+        <option key={city} value={city}>
+          {city}
+        </option>
+      ))}
+    </select>
+  );
 
   const handleLinkClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -93,26 +87,18 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
       {weatherData && (
         <React.Fragment>
           <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
-            {" "}
-            {/* Adjusted font size */}
             Temperature: {parseFloat(weatherData.temperature).toFixed(2)}°C
           </Typography>
           <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
-            {" "}
-            {/* Adjusted font size */}
             Soil Moisture: {parseFloat(weatherData.soilMoisture).toFixed(2)}%
           </Typography>
           <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
-            {" "}
-            {/* Adjusted font size */}
             Wind Speed: {parseFloat(weatherData.winds).toFixed(2)} km/h
           </Typography>
           <Typography
             color="text.secondary"
             sx={{ flex: 1, fontSize: "0.75rem" }}
           >
-            {" "}
-            {/* Adjusted font size */}
             {new Date(weatherData.date).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
@@ -128,8 +114,6 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
           onClick={handleLinkClick}
           sx={{ fontSize: "0.875rem" }}
         >
-          {" "}
-          {/* Adjusted font size */}
           {isHistoryPage ? "Go back" : "View history"}
         </Link>
       </div>
