@@ -101,7 +101,7 @@ const Orders: React.FC<OrdersProps> = ({ showCurrentCityOnly = false }) => {
             <TableCell>Country</TableCell>
             <TableCell>City</TableCell>
             <TableCell>Soil Moisture</TableCell>
-            <TableCell>Wind</TableCell>
+            <TableCell>Humidity</TableCell>
             <TableCell>Temperature</TableCell>
           </TableRow>
         </TableHead>
@@ -115,7 +115,7 @@ const Orders: React.FC<OrdersProps> = ({ showCurrentCityOnly = false }) => {
               <TableCell>{row.country}</TableCell>
               <TableCell>{row.city}</TableCell>
               <TableCell>{parseFloat(row.soilMoisture).toFixed(2)} %</TableCell>
-              <TableCell>{parseFloat(row.winds).toFixed(2)} km/h</TableCell>
+              <TableCell>{parseFloat(row.humidity).toFixed(2)}%</TableCell>
               <TableCell>{parseFloat(row.temperature).toFixed(2)} °C</TableCell>
             </TableRow>
           ))}
