@@ -4,12 +4,10 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Title from "./Title";
 import fetchData from "../../../api/fetchData";
 import WeatherData from "../../../api/types";
+import { Paper, TableContainer, TablePagination } from "@mui/material";
 
 interface OrdersProps {
   showCurrentCityOnly?: boolean; // Add a prop to control what data to show
@@ -64,29 +62,6 @@ const Orders: React.FC<OrdersProps> = ({ showCurrentCityOnly = false }) => {
     (page + 1) * itemsPerPage
   );
 
-  const handleNextPage = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  const handlePrevPage = () => {
-    setPage((prevPage) => Math.max(prevPage - 1, 0));
-  };
-
-  const handleFirstPage = () => {
-    setPage(0);
-  };
-
-  const handleLastPage = () => {
-    setPage(Math.floor(filteredData.length / itemsPerPage));
-  };
-
-  const handleItemsPerPageChange = (items: number) => {
-    const currentItemIndex = page * itemsPerPage;
-    const newPage = Math.floor(currentItemIndex / items);
-    setItemsPerPage(items);
-    setPage(Math.min(newPage, Math.floor(filteredData.length / items)));
-  };
-
   return (
     <React.Fragment>
       <Title>
@@ -94,99 +69,51 @@ const Orders: React.FC<OrdersProps> = ({ showCurrentCityOnly = false }) => {
           ? `Current conditions in ${currentCity}`
           : "Current conditions in other countries"}
       </Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date/Time</TableCell>
-            <TableCell>Country</TableCell>
-            <TableCell>City</TableCell>
-            <TableCell>Soil Moisture</TableCell>
-            <TableCell>Wind</TableCell>
-            <TableCell>Temperature</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {pageData.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>
-                {new Date(row.date).toLocaleDateString()}{" "}
-                {new Date(row.date).toLocaleTimeString()}
-              </TableCell>
-              <TableCell>{row.country}</TableCell>
-              <TableCell>{row.city}</TableCell>
-              <TableCell>{parseFloat(row.soilMoisture).toFixed(2)} %</TableCell>
-              <TableCell>{parseFloat(row.winds).toFixed(2)} km/h</TableCell>
-              <TableCell>{parseFloat(row.temperature).toFixed(2)} °C</TableCell>
+      <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+        <Table aria-label="simple table" size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Date/Time</TableCell>
+              <TableCell>Country</TableCell>
+              <TableCell>City</TableCell>
+              <TableCell>Soil Moisture</TableCell>
+              <TableCell>Humidity</TableCell>
+              <TableCell>Temperature</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mt={2}
-      >
-        <Button size="small" onClick={handleFirstPage} disabled={page === 0}>
-          First
-        </Button>
-        <Button size="small" onClick={handlePrevPage} disabled={page === 0}>
-          Previous
-        </Button>
-        <Typography variant="body2">
-          {`Showing ${page * itemsPerPage + 1} - ${Math.min(
-            (page + 1) * itemsPerPage,
-            filteredData.length
-          )} of ${filteredData.length}`}
-        </Typography>
-        <Button
-          size="small"
-          onClick={handleNextPage}
-          disabled={(page + 1) * itemsPerPage >= filteredData.length}
-        >
-          Next
-        </Button>
-        <Button
-          size="small"
-          onClick={handleLastPage}
-          disabled={(page + 1) * itemsPerPage >= filteredData.length}
-        >
-          Last
-        </Button>
-      </Box>
-      <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
-        <Typography variant="body2" sx={{ mr: 1 }}>
-          Items per page:{" "}
-        </Typography>
-        <Button
-          size="small"
-          onClick={() => handleItemsPerPageChange(15)}
-          disabled={itemsPerPage === 15}
-        >
-          15
-        </Button>
-        <Button
-          size="small"
-          onClick={() => handleItemsPerPageChange(20)}
-          disabled={itemsPerPage === 20}
-        >
-          20
-        </Button>
-        <Button
-          size="small"
-          onClick={() => handleItemsPerPageChange(30)}
-          disabled={itemsPerPage === 30}
-        >
-          30
-        </Button>
-        <Button
-          size="small"
-          onClick={() => handleItemsPerPageChange(40)}
-          disabled={itemsPerPage === 40}
-        >
-          40
-        </Button>
-      </Box>
+          </TableHead>
+          <TableBody>
+            {pageData.map((row) => (
+              <TableRow key={row.id}>
+                <TableCell>
+                  {new Date(row.date).toLocaleDateString()}{" "}
+                  {new Date(row.date).toLocaleTimeString()}
+                </TableCell>
+                <TableCell>{row.country}</TableCell>
+                <TableCell>{row.city}</TableCell>
+                <TableCell>
+                  {parseFloat(row.soilMoisture).toFixed(2)} %
+                </TableCell>
+                <TableCell>{parseFloat(row.winds).toFixed(2)}%</TableCell>
+                <TableCell>
+                  {parseFloat(row.temperature).toFixed(2)} °C
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[15, 20, 30]}
+        component="div"
+        count={filteredData.length}
+        rowsPerPage={itemsPerPage}
+        page={page}
+        onPageChange={(_event, newPage) => setPage(newPage)}
+        onRowsPerPageChange={(event) => {
+          setItemsPerPage(parseInt(event.target.value, 10));
+          setPage(0); // Reset page if items per page changes
+        }}
+      />
     </React.Fragment>
   );
 };

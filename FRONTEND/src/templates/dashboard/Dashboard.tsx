@@ -1,3 +1,26 @@
+{
+  /*import Navbar from "../../components/Navbar";
+
+interface DashboardProps {
+  data: any;
+  error?: Error; // Make error prop optional
+}
+
+const Dashboard = ({ error }: DashboardProps) => {
+  console.log("error:", error);
+
+  return (
+    <div>
+      <Navbar />
+      <img src="/bg_test.jpg" alt="loading" />
+    </div>
+  );
+};
+
+export default Dashboard;
+
+*/
+}
 import * as React from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,8 +40,9 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
-import Orders from "./Orders";
+
 import APIDeposits from "./APIDeposits";
+import Orders from "./Orders";
 
 const drawerWidth: number = 240;
 
