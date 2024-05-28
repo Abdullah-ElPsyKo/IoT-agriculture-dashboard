@@ -4,6 +4,7 @@ import { LineChart, axisClasses } from "@mui/x-charts";
 import { ChartsTextStyle } from "@mui/x-charts/ChartsText";
 import Title from "./Title";
 import fetchData, { fetchUniqueCities } from "../../../api/fetchData";
+import CustomSelect from "./Select";
 
 interface WeatherData {
   id: number;
@@ -118,21 +119,20 @@ const Chart = () => {
       <div
         style={{
           display: "flex",
-          justifyContent: "flex-start",
-          flexDirection: "row",
+          justifyContent: "space-between", // This will space out the children evenly across the main axis
+          alignItems: "center", // Align items vertically centered if needed
         }}
       >
-        <Title>Monthly average temperature</Title>
-        <select
-          value={selectedCity}
-          onChange={(e) => setSelectedCity(e.target.value)}
-        >
-          {cities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </select>
+        <div>
+          <Title>Monthly average temperature</Title>
+        </div>
+        <div style={{ marginLeft: "auto" }}>
+          <CustomSelect
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            cities={cities}
+          />
+        </div>
       </div>
 
       <div style={{ width: "100%", flexGrow: 1, overflow: "hidden" }}>

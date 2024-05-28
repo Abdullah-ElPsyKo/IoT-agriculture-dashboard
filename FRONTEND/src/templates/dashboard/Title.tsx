@@ -5,10 +5,14 @@ interface TitleProps {
   children?: React.ReactNode;
 }
 
-const Title = (props: TitleProps) => {
+const Title = ({ children }: TitleProps) => {
   return (
-    <Typography component="h2" variant="h6" color="primary" gutterBottom>
-      {props.children}
+    <Typography
+      variant="h6"
+      color="primary"
+      sx={{ fontSize: { xs: "1rem", sm: "1.5rem" } }}
+    >
+      {children}
     </Typography>
   );
 };

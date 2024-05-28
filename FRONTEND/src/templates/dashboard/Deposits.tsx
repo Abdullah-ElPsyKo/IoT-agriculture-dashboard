@@ -8,6 +8,7 @@ import {
   fetchUniqueCities,
   fetchLatestSCityData,
 } from "../../../api/fetchData";
+import CustomSelect from "./Select";
 
 interface DepositsProps {
   showAllData?: boolean;
@@ -26,8 +27,6 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
     fetchUniqueCities()
       .then((uniqueCities) => {
         setCities(uniqueCities);
-
-        // Set the first city as the default selected city
         if (uniqueCities.length > 0 && !selectedCity) {
           setSelectedCity(uniqueCities[0]);
         }
@@ -48,16 +47,11 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   }, [selectedCity]);
 
   const renderDropdown = () => (
-    <select
-      value={selectedCity}
-      onChange={(e) => setSelectedCity(e.target.value)}
-    >
-      {cities.map((city) => (
-        <option key={city} value={city}>
-          {city}
-        </option>
-      ))}
-    </select>
+    <CustomSelect
+      selectedCity={selectedCity}
+      setSelectedCity={setSelectedCity}
+      cities={cities}
+    />
   );
 
   const handleLinkClick = (event: React.MouseEvent) => {
@@ -72,7 +66,7 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   return (
     <React.Fragment>
       <Title>
-        Latest Weather,{" "}
+        Latest Weather in{" "}
         {weatherData
           ? `${weatherData.city}, ${new Date(
               weatherData.date
@@ -84,20 +78,33 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
           : ""}
       </Title>
       {renderDropdown()}
+      <div style={{ paddingBottom: "5px" }}></div>
       {weatherData && (
         <React.Fragment>
-          <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
+          <Typography
+            component="p"
+            variant="h5"
+            sx={{ fontSize: "0.875rem", marginBottom: "8px" }}
+          >
             Temperature: {parseFloat(weatherData.temperature).toFixed(2)}°C
           </Typography>
-          <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
+          <Typography
+            component="p"
+            variant="h5"
+            sx={{ fontSize: "0.875rem", marginBottom: "8px" }}
+          >
             Soil Moisture: {parseFloat(weatherData.soilMoisture).toFixed(2)}%
           </Typography>
-          <Typography component="p" variant="h5" sx={{ fontSize: "0.875rem" }}>
+          <Typography
+            component="p"
+            variant="h5"
+            sx={{ fontSize: "0.875rem", marginBottom: "8px" }}
+          >
             Humidity: {parseFloat(weatherData.humidity).toFixed(2)}%
           </Typography>
           <Typography
             color="text.secondary"
-            sx={{ flex: 1, fontSize: "0.75rem" }}
+            sx={{ flex: 1, fontSize: "0.75rem", marginTop: "16px" }}
           >
             {new Date(weatherData.date).toLocaleDateString("en-US", {
               month: "short",
@@ -112,7 +119,11 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
           color="primary"
           href="#"
           onClick={handleLinkClick}
-          sx={{ fontSize: "0.875rem" }}
+          sx={{
+            fontSize: "0.875rem",
+            textDecoration: "underline",
+            cursor: "pointer",
+          }}
         >
           {isHistoryPage ? "Go back" : "View history"}
         </Link>

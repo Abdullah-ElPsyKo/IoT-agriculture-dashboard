@@ -93,7 +93,7 @@ const Orders: React.FC<OrdersProps> = ({ showCurrentCityOnly = false }) => {
                 <TableCell>
                   {parseFloat(row.soilMoisture).toFixed(2)} %
                 </TableCell>
-                <TableCell>{parseFloat(row.winds).toFixed(2)}%</TableCell>
+                <TableCell>{parseFloat(row.humidity).toFixed(2)}%</TableCell>
                 <TableCell>
                   {parseFloat(row.temperature).toFixed(2)} °C
                 </TableCell>
