@@ -42,7 +42,7 @@ module.exports = (sequelize) => {
     },
     temperature: DataTypes.FLOAT,
     soilMoisture: DataTypes.FLOAT,
-    winds: DataTypes.FLOAT,
+    humidity: DataTypes.FLOAT,
   }, {
     timestamps: false
   });
@@ -57,7 +57,7 @@ module.exports = (sequelize) => {
         city: city,
         temperature: Math.random() * 35,
         soilMoisture: Math.random() * 100,
-        winds: Math.random() * 100
+        humidity: Math.random() * 100
       };
     });
     await this.bulkCreate(data);
