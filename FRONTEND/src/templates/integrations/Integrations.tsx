@@ -3,7 +3,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
-import Navbar from "../../components/Navbar";
 import { Divider } from "@mui/material";
 
 const defaultTheme = createTheme();
@@ -11,7 +10,6 @@ const defaultTheme = createTheme();
 const Integrations: React.FC = () => {
   return (
     <div>
-      <Navbar />
       <ThemeProvider theme={defaultTheme}>
         <Box sx={{ display: "flex" }}>
           <Box
@@ -22,7 +20,6 @@ const Integrations: React.FC = () => {
                   ? theme.palette.grey[100]
                   : theme.palette.grey[900],
               flexGrow: 1,
-              height: "100vh",
               overflow: "auto",
             }}
           >

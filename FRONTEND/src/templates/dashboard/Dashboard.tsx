@@ -1,5 +1,4 @@
 import { Box, Container, Grid, Paper, Toolbar } from "@mui/material";
-import Navbar from "../../components/Navbar";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import APIDeposits from "./APIDeposits";
@@ -15,7 +14,6 @@ const Dashboard = ({ error }: DashboardProps) => {
 
   return (
     <div>
-      <Navbar />
       <Box
         component="main"
         sx={{
