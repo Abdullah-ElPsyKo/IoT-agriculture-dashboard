@@ -4,7 +4,14 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Navbar from "../../components/Navbar";
-import { Divider } from "@mui/material";
+import {
+  Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const defaultTheme = createTheme();
 
@@ -28,7 +35,6 @@ const Integrations: React.FC = () => {
           >
             <Toolbar />
             <Container maxWidth="lg">
-              {/* Add your integration content here */}
               <iframe
                 src="https://www.meteoblue.com/en/weather/maps/widget/basel_switzerland_2661604?windAnimation=0&windAnimation=1&gust=0&gust=1&satellite=0&satellite=1&cloudsAndPrecipitation=0&cloudsAndPrecipitation=1&temperature=0&temperature=1&sunshine=0&sunshine=1&extremeForecastIndex=0&extremeForecastIndex=1&geoloc=fixed&tempunit=C&windunit=km%252Fh&lengthunit=metric&zoom=5&autowidth=auto"
                 title="Weather Widget"
@@ -82,11 +88,209 @@ const Integrations: React.FC = () => {
                   <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                     How To Use
                   </h2>
-                  <p className="mt-6 text-lg leading-8 text-gray-300">
-                    Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
-                    qui lorem cupidatat commodo. Elit sunt amet fugiat veniam
-                    occaecat fugiat aliqua.
-                  </p>
+                  <div className="mt-6 text-lg leading-8 text-gray-300">
+                    <h3 className="text-3xl font-semibold text-white">
+                      Guide for Farmers on Using the Weather Radar
+                    </h3>
+                    <p className="mt-4">
+                      This guide will help you extract relevant information from
+                      the weather radar, enabling you to make better-informed
+                      decisions for your farming activities. We will focus on
+                      three key components: Wind Animation, Clouds &
+                      Precipitation, and Temperature. Below you will find a
+                      detailed explanation of each component and how to
+                      interpret the corresponding legends.
+                    </p>
+
+                    <Accordion className="mt-6">
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography className="text-xl font-semibold text-black">
+                          1. Wind Animation
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>
+                          <h5 className="text-lg font-semibold text-black mt-4">
+                            How to use:
+                          </h5>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>
+                              <strong>Selection:</strong> Click on the "Wind
+                              Animation" option in the menu on the right.
+                            </li>
+                            <li>
+                              <strong>Display:</strong> You can choose between
+                              different animation displays, such as "Rainbow" or
+                              "Cold/Warm".
+                            </li>
+                            <li>
+                              <strong>Height:</strong> Set the height (e.g., 10
+                              m above ground) to view wind speed at that
+                              altitude.
+                            </li>
+                          </ul>
+                          <h5 className="text-lg font-semibold text-black mt-4">
+                            Interpreting the Legend:
+                          </h5>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>
+                              <strong>Wind Speed (km/h):</strong> The colors on
+                              the map correspond to wind speeds, as shown in the
+                              legend on the left. For example:
+                            </li>
+                            <ul className="ml-6">
+                              <li className="text-cyan-500">
+                                Light Blue: 5-10 km/h
+                              </li>
+                              <li className="text-green-500">
+                                Green: 20-35 km/h
+                              </li>
+                              <li className="text-yellow-500">
+                                Yellow: 55-70 km/h
+                              </li>
+                              <li className="text-purple-500">
+                                Purple: 100-120 km/h
+                              </li>
+                            </ul>
+                          </ul>
+                        </Typography>
+                      </AccordionDetails>
+                    </Accordion>
+
+                    <Accordion className="mt-6">
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel2a-content"
+                        id="panel2a-header"
+                      >
+                        <Typography className="text-xl font-semibold text-Black">
+                          2. Clouds and Precipitation
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>
+                          <h5 className="text-lg font-semibold text-black mt-4">
+                            How to use:
+                          </h5>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>
+                              <strong>Selection:</strong> Click on the "Clouds &
+                              Precipitation" option in the menu on the right.
+                            </li>
+                            <li>
+                              <strong>Display:</strong> The map will show cloud
+                              cover and precipitation intensity.
+                            </li>
+                          </ul>
+                          <h5 className="text-lg font-semibold text-black mt-4">
+                            Interpreting the Legend:
+                          </h5>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>
+                              <strong>Precipitation (mm):</strong> The colors on
+                              the map correspond to the amount of precipitation
+                              in millimeters. For example:
+                            </li>
+                            <ul className="ml-6">
+                              <li className="text-cyan-500">
+                                Light Blue: 0.25-0.5 mm
+                              </li>
+                              <li className="text-green-500">Green: 3-5 mm</li>
+                              <li className="text-yellow-500">
+                                Yellow: 10-15 mm
+                              </li>
+                              <li className="text-red-500">Red: 25-30 mm</li>
+                            </ul>
+                          </ul>
+                        </Typography>
+                      </AccordionDetails>
+                    </Accordion>
+
+                    <Accordion className="mt-6">
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel3a-content"
+                        id="panel3a-header"
+                      >
+                        <Typography className="text-xl font-semibold text-black">
+                          3. Temperature
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>
+                          <h5 className="text-lg font-semibold text-black mt-4">
+                            How to use:
+                          </h5>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>
+                              <strong>Selection:</strong> Click on the
+                              "Temperature" option in the menu on the right.
+                            </li>
+                            <li>
+                              <strong>Display:</strong> The map will show the
+                              temperature distribution.
+                            </li>
+                          </ul>
+                          <h5 className="text-lg font-semibold text-black mt-4">
+                            Interpreting the Legend:
+                          </h5>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>
+                              <strong>Temperature (°C):</strong> The colors on
+                              the map correspond to the temperature values. For
+                              example:
+                            </li>
+                            <ul className="ml-6">
+                              <li className="text-cyan-500">
+                                Light Blue: -10 to 0°C
+                              </li>
+                              <li className="text-green-500">
+                                Green: 10 to 20°C
+                              </li>
+                              <li className="text-yellow-500">
+                                Yellow: 30 to 40°C
+                              </li>
+                              <li className="text-red-500">Red: 50 to 60°C</li>
+                            </ul>
+                          </ul>
+                        </Typography>
+                      </AccordionDetails>
+                    </Accordion>
+                    <Accordion className="mt-6">
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel4a-content"
+                        id="panel4a-header"
+                      >
+                        <Typography className="text-xl font-semibold text-black">
+                          General Tips
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>
+                              Updating the Map: Ensure the map is updated
+                              regularly to get the most current information.
+                            </li>
+                            <li>
+                              Specific Regions: Zoom into specific regions for
+                              more detailed information.
+                            </li>
+                            <li>
+                              Planning: Use this information to plan activities
+                              such as planting, irrigation, and harvesting based
+                              on weather conditions.
+                            </li>
+                          </ul>
+                        </Typography>
+                      </AccordionDetails>
+                    </Accordion>
+                  </div>
                 </div>
               </div>
             </div>
