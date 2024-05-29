@@ -39,3 +39,17 @@ export const fetchLatestSCityData = async (city: string) => {
   const data = await response.json();
   return data; // Assuming the response is a single WeatherData object
 };
+
+export async function fetchLatestCityData(city: any, page: any, limit: any) {
+  try {
+    const response = await fetch(`http://s140639.devops-ap.be/api/latest_city_data/${city}/page/${page}/limit/${limit}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching data for city ${city}: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching latest city data:', error);
+    throw error;
+  }
+}

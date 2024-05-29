@@ -33,7 +33,7 @@ const App = () => {
           {/* Define routes */}
           <Route path="/" element={<Dashboard data={data} />} />
           <Route path="/integrations" element={<Integrations />} />
-          <Route path="/history" element={<History />} />
+          <Route path="/history/:city/:page/:limit" element={<History />} />
           <Route path="/about_us" element={<AboutUs />} />
           <Route path="/crops" element={<CropBoxes />} />
         </Routes>

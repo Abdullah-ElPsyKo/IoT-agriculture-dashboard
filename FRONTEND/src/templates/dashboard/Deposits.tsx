@@ -1,8 +1,6 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Title from "./Title";
-import { useNavigate } from "react-router-dom";
 import WeatherData from "../../../api/types";
 import {
   fetchUniqueCities,
@@ -21,7 +19,6 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   );
   const [selectedCity, setSelectedCity] = React.useState<string>("");
   const [cities, setCities] = React.useState<string[]>([]);
-  const navigate = useNavigate();
 
   React.useEffect(() => {
     fetchUniqueCities()
@@ -53,15 +50,6 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
       cities={cities}
     />
   );
-
-  const handleLinkClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    if (isHistoryPage) {
-      navigate("/");
-    } else {
-      navigate("/history");
-    }
-  };
 
   return (
     <React.Fragment>
@@ -115,18 +103,16 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
         </React.Fragment>
       )}
       <div>
-        <Link
-          color="primary"
-          href="#"
-          onClick={handleLinkClick}
-          sx={{
+        <a
+          href={`/history/${selectedCity}/1/15`}
+          style={{
             fontSize: "0.875rem",
             textDecoration: "underline",
             cursor: "pointer",
           }}
         >
           {isHistoryPage ? "Go back" : "View history"}
-        </Link>
+        </a>
       </div>
     </React.Fragment>
   );
