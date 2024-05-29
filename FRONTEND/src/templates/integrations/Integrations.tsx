@@ -3,7 +3,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
-import Navbar from "../../components/Navbar";
 import {
   Divider,
   Accordion,
@@ -12,6 +11,12 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  FaWind,
+  FaCloudRain,
+  FaTemperatureHigh,
+  FaLightbulb,
+} from "react-icons/fa";
 
 const defaultTheme = createTheme();
 
@@ -106,8 +111,8 @@ const Integrations: React.FC = () => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className="text-xl font-semibold text-black">
-                          1. Wind Animation
+                        <Typography className="text-xl font-semibold text-black flex items-center">
+                          <FaWind className="h-6 w-6 mr-2" /> Wind Animation
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
@@ -165,8 +170,9 @@ const Integrations: React.FC = () => {
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                       >
-                        <Typography className="text-xl font-semibold text-Black">
-                          2. Clouds and Precipitation
+                        <Typography className="text-xl font-semibold text-black flex items-center">
+                          <FaCloudRain className="h-6 w-6 mr-2" /> Clouds and
+                          Precipitation
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
@@ -214,8 +220,9 @@ const Integrations: React.FC = () => {
                         aria-controls="panel3a-content"
                         id="panel3a-header"
                       >
-                        <Typography className="text-xl font-semibold text-black">
-                          3. Temperature
+                        <Typography className="text-xl font-semibold text-black flex items-center">
+                          <FaTemperatureHigh className="h-6 w-6 mr-2" />{" "}
+                          Temperature
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
@@ -258,14 +265,15 @@ const Integrations: React.FC = () => {
                         </Typography>
                       </AccordionDetails>
                     </Accordion>
+
                     <Accordion className="mt-6">
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel4a-content"
                         id="panel4a-header"
                       >
-                        <Typography className="text-xl font-semibold text-black">
-                          General Tips
+                        <Typography className="text-xl font-semibold text-black flex items-center">
+                          <FaLightbulb className="h-6 w-6 mr-2" /> General Tips
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
