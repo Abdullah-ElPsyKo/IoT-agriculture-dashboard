@@ -13,7 +13,7 @@ const Navbar = () => {
       >
         <div className="flex lg:flex-1">
           <a
-            href="#"
+            href="/"
             className="-m-1.5 p-1.5"
             style={{ padding: ".375rem", margin: "-2rem" }}
           >
