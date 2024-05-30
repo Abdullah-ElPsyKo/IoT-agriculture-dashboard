@@ -83,6 +83,26 @@ router.get('/city_data/:city', async (req, res) => {
   }
 });
 
+// GET route to fetch the latest data for a specific city and farm
+router.get('/latest_data/:city/:farm', async (req, res) => {
+  const { city, farm } = req.params;
+  try {
+    const latestData = await EnvironmentalData.findOne({
+      where: { city, farm },
+      order: [['date', 'DESC']]  // Sorting by 'date' in descending order to get the latest entry
+    });
+
+    if (latestData) {
+      res.json(latestData);
+    } else {
+      res.status(404).send(`No data found for city ${city} and farm ${farm}`);
+    }
+  } catch (error) {
+    console.error(`Error fetching latest data for city ${city} and farm ${farm}:`, error);
+    res.status(500).send(`Internal Server Error`);
+  }
+});
+
 // GET route to fetch the latest data for a specific city
 router.get('/latest_city_data/:city', async (req, res) => {
   const { city } = req.params;
