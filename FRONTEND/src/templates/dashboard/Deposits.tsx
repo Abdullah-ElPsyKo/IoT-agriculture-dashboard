@@ -1,6 +1,5 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import Title from "./Title";
 import WeatherData from "../../../api/types";
 import {
   fetchUniqueCities,
@@ -89,7 +88,7 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
 
   return (
     <React.Fragment>
-      <Title>
+      <h2 style={{ fontSize: "20px", color: "rgb(25, 118, 210)" }}>
         Latest Weather in{" "}
         {weatherData
           ? `${
@@ -102,7 +101,7 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
               year: "numeric",
             })}`
           : ""}
-      </Title>
+      </h2>
       {renderDropdown()}
       <div style={{ paddingBottom: "5px" }}></div>
       {weatherData && (

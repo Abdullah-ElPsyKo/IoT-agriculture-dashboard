@@ -156,7 +156,7 @@ const Chart = () => {
           alignItems: "center",
         }}
       >
-        <h2 style={{ fontSize: "10px", color: "rgb(25, 118, 210)" }}>
+        <h2 style={{ fontSize: "20px", color: "rgb(25, 118, 210)" }}>
           Monthly Average Temperature,{" "}
           {selectedFarm == "None"
             ? selectedCity
