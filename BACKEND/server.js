@@ -53,6 +53,24 @@ router.get('/unique_farms/:city', async (req, res) => {
   }
 });
 
+// GET route to fetch all data for a specific city and farm
+router.get('/city_farm_data/:city/:farm', async (req, res) => {
+  const { city, farm } = req.params;
+  try {
+    const data = await EnvironmentalData.findAll({
+      where: { city, farm }
+    });
+    if (data.length > 0) {
+      res.json(data);
+    } else {
+      res.status(404).send(`No data found for city ${city} and farm ${farm}`);
+    }
+  } catch (error) {
+    console.error(`Error fetching data for city ${city} and farm ${farm}:`, error);
+    res.status(500).send(`Error fetching data for city ${city} and farm ${farm}`);
+  }
+});
+
 // GET route to fetch all data for a specific city
 router.get('/city_data/:city', async (req, res) => {
   const { city } = req.params;
