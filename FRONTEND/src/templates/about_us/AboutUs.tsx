@@ -1,52 +1,52 @@
 const people = [
   {
-    name: "John von Muhlen",
-    role: "Web Developer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    university: "Stanford University",
-  },
-  {
-    name: "Alice Johnson",
-    role: "Graphic Designer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    university: "Rhode Island School of Design",
-  },
-  {
-    name: "Bob Smith",
-    role: "Project Manager",
-    imageUrl:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    university: "Harvard University",
-  },
-  {
-    name: "Carol White",
-    role: "UI/UX Designer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    university: "University of California, Berkeley",
-  },
-  {
-    name: "David Brown",
-    role: "Software Engineer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    university: "Massachusetts Institute of Technology",
-  },
-  {
-    name: "Eva Green",
-    role: "Data Scientist",
+    name: "Nelson Neves",
+    role: "Project Advisor",
     imageUrl:
       "https://images.unsplash.com/photo-1517843569279-7f6c3ff7785d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "University of Oxford",
   },
   {
-    name: "Frank Harris",
-    role: "System Administrator",
+    name: "Abdulla Bagishev",
+    role: "Backend Developer",
     imageUrl:
-      "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    university: "Carnegie Mellon University",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    university: "AP Hogeschool",
+  },
+  {
+    name: "Bruno Aguiar",
+    role: "Documentation",
+    imageUrl:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    university: "Ispgaya",
+  },
+  {
+    name: "George Paschalis",
+    role: "Hardware",
+    imageUrl:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    university: "Hellenic Mediterranean University",
+  },
+  {
+    name: "John von Muhlen",
+    role: "Web Design",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    university: "InHolland University of Applied Sciences",
+  },
+  {
+    name: "Mabula Thomas",
+    role: "Hardware",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    university: "Karume Institute of Science and Technology",
+  },
+  {
+    name: "Seppe Faster",
+    role: "Web Design",
+    imageUrl:
+      "https://images.unsplash.com/photo-1517843569279-7f6c3ff7785d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    university: "AP Hogeschool",
   },
 ];
 
