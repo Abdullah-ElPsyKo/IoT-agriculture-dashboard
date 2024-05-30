@@ -40,6 +40,19 @@ export const fetchLatestSFarmData = async (city: string, farm:string) => {
   return data; // Assuming the response is a single WeatherData object
 };
 
+export const fetchLatestFarmData = async (city: string, farm:string) => {
+  const response = await fetch(
+    `http://s140639.devops-ap.be/api/city_farm_data/${city}/${farm}`
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch data for the selected farm: ${response.statusText}`
+    );
+  }
+  const data = await response.json();
+  return data; // Assuming the response is a single WeatherData object
+};
+
 export async function fetchLatestCityData(city: any, page: any, limit: any) {
   try {
     const response = await fetch(`http://s140639.devops-ap.be/api/latest_city_data/${city}/page/${page}/limit/${limit}`);
