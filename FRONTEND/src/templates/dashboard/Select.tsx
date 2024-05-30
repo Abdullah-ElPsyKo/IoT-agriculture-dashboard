@@ -12,22 +12,22 @@ function classNames(...classes: any) {
 }
 
 const CustomSelect = ({
-  selectedCity,
-  setSelectedCity,
-  cities,
+  selectedValue,
+  onSelect,
+  options,
 }: {
-  selectedCity: string;
-  setSelectedCity: (city: string) => void;
-  cities: string[];
+  selectedValue: string;
+  onSelect: (value: string) => void;
+  options: string[];
 }) => {
   return (
-    <Listbox value={selectedCity} onChange={setSelectedCity}>
+    <Listbox value={selectedValue} onChange={onSelect}>
       {({ open }) => (
         <>
           <div className="relative mt-2">
             <ListboxButton className="relative w-48 cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
               <span className="flex items-center">
-                <span className="ml-3 block truncate">{selectedCity}</span>
+                <span className="ml-3 block truncate">{selectedValue}</span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                 <ChevronUpDownIcon
@@ -43,19 +43,20 @@ const CustomSelect = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <ListboxOptions className="absolute z-10 mt-1 max-h-56 w-48 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {cities.map((city) => (
+              <ListboxOptions className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                {options.map((option) => (
                   <ListboxOption
-                    key={city}
-                    className={({ active }) =>
+                    key={option}
+                    className={({ focus }) =>
                       classNames(
-                        active ? "bg-indigo-600 text-white" : "text-gray-900",
+                        focus ? "bg-indigo-600 text-white" : "",
+                        !focus ? "text-gray-900" : "",
                         "relative cursor-default select-none py-2 pl-3 pr-9"
                       )
                     }
-                    value={city}
+                    value={option}
                   >
-                    {({ selected, active }) => (
+                    {({ selected, focus }) => (
                       <>
                         <div className="flex items-center">
                           <span
@@ -64,14 +65,13 @@ const CustomSelect = ({
                               "ml-3 block truncate"
                             )}
                           >
-                            {city}
+                            {option}
                           </span>
                         </div>
-
                         {selected ? (
                           <span
                             className={classNames(
-                              active ? "text-white" : "text-indigo-600",
+                              focus ? "text-white" : "text-indigo-600",
                               "absolute inset-y-0 right-0 flex items-center pr-4"
                             )}
                           >

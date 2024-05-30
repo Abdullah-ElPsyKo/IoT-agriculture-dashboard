@@ -6,6 +6,14 @@ export const fetchUniqueCities = async () => {
   return response.json();
 };
 
+export const fetchUniqueFarms = async (city:string) => {
+  const response = await fetch(`http://s140639.devops-ap.be/api/unique_farms/${city}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch unique farms");
+  }
+  return response.json();
+};
+
 export const fetchLatestSCityData = async (city: string) => {
   const response = await fetch(
     `http://s140639.devops-ap.be/api/latest_city_data/${city}`
@@ -13,6 +21,19 @@ export const fetchLatestSCityData = async (city: string) => {
   if (!response.ok) {
     throw new Error(
       `Failed to fetch data for the selected city: ${response.statusText}`
+    );
+  }
+  const data = await response.json();
+  return data; // Assuming the response is a single WeatherData object
+};
+
+export const fetchLatestSFarmData = async (city: string) => {
+  const response = await fetch(
+    `http://s140639.devops-ap.be/api/unique_farms/${city}`
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch data for the selected farm: ${response.statusText}`
     );
   }
   const data = await response.json();

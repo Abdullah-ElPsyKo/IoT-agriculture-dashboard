@@ -3,7 +3,12 @@ import { useTheme } from "@mui/material/styles";
 import { LineChart, axisClasses } from "@mui/x-charts";
 import { ChartsTextStyle } from "@mui/x-charts/ChartsText";
 import Title from "./Title";
-import { fetchUniqueCities, fetchAllCityData } from "../../../api/fetchData";
+import {
+  fetchUniqueCities,
+  fetchAllCityData,
+  fetchUniqueFarms,
+  fetchLatestSFarmData,
+} from "../../../api/fetchData";
 import CustomSelect from "./Select";
 
 interface WeatherData {
@@ -57,6 +62,9 @@ const Chart = () => {
   const [selectedCity, setSelectedCity] = React.useState<string>("");
   const [cities, setCities] = React.useState<string[]>([]);
 
+  const [selectedFarm, setSelectedFarm] = React.useState<string>("");
+  const [farms, setFarms] = React.useState<string[]>([]);
+
   React.useEffect(() => {
     fetchUniqueCities()
       .then((cities) => {
@@ -67,6 +75,47 @@ const Chart = () => {
       })
       .catch((error) => console.error("Failed to fetch unique cities:", error));
   }, []);
+
+  React.useEffect(() => {
+    if (selectedCity) {
+      fetchUniqueFarms(selectedCity)
+        .then((farmList) => setFarms(farmList))
+        .catch((error) => console.error("Failed to fetch farms:", error));
+    }
+  }, [selectedCity]);
+
+  React.useEffect(() => {
+    if (selectedFarm) {
+      fetchLatestSFarmData(selectedFarm)
+        .then((data: WeatherData[]) => {
+          if (!Array.isArray(data)) {
+            throw new TypeError("Expected an array of weather data");
+          }
+          const dataByMonth: {
+            [month: string]: { sum: number; count: number };
+          } = {};
+          data.forEach((entry) => {
+            const month = new Date(entry.date).toLocaleString("default", {
+              month: "short",
+            });
+            if (!dataByMonth[month]) {
+              dataByMonth[month] = { sum: 0, count: 0 };
+            }
+            dataByMonth[month].sum += entry.temperature;
+            dataByMonth[month].count += 1;
+          });
+          const monthlyAverages = Object.keys(dataByMonth).map((month) => ({
+            time: month,
+            amount: Math.round(
+              dataByMonth[month].sum / dataByMonth[month].count
+            ),
+          }));
+
+          setChartData(sortMonthlyAverages(monthlyAverages));
+        })
+        .catch((error) => console.error("Failed to fetch farm data:", error));
+    }
+  }, [selectedFarm]);
 
   React.useEffect(() => {
     if (!selectedCity) return;
@@ -109,11 +158,24 @@ const Chart = () => {
         }}
       >
         <Title>Monthly Average Temperature</Title>
-        <CustomSelect
-          selectedCity={selectedCity}
-          setSelectedCity={setSelectedCity}
-          cities={cities}
-        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <CustomSelect
+            selectedValue={selectedCity}
+            onSelect={setSelectedCity}
+            options={cities}
+          />
+          <CustomSelect
+            selectedValue={selectedFarm}
+            onSelect={setSelectedFarm}
+            options={farms}
+          />
+        </div>
       </div>
       <LineChart
         dataset={chartData}
