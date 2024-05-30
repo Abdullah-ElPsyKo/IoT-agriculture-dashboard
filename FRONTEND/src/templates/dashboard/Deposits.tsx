@@ -3,9 +3,8 @@ import Typography from "@mui/material/Typography";
 import WeatherData from "../../../api/types";
 import {
   fetchUniqueCities,
-  fetchLatestSCityData,
   fetchUniqueFarms,
-  fetchLatestSFarmData,
+  fetchLatestData,
 } from "../../../api/fetchData";
 import CustomSelect from "./Select";
 
@@ -21,7 +20,7 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   const [selectedCity, setSelectedCity] = React.useState<string>("");
   const [cities, setCities] = React.useState<string[]>([]);
 
-  const [selectedFarm, setSelectedFarm] = React.useState<string>("None");
+  const [selectedFarm, setSelectedFarm] = React.useState<string>("");
   const [farms, setFarms] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -40,30 +39,27 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   React.useEffect(() => {
     if (selectedCity) {
       fetchUniqueFarms(selectedCity)
-        .then((farmList) => setFarms(farmList))
+        .then((farmList) => {
+          if (farmList.length > 0 && !selectedFarm) {
+            setSelectedFarm(farmList[0]);
+          }
+          setFarms(farmList);
+        })
         .catch((error) => console.error("Failed to fetch farms:", error));
     }
   }, [selectedCity]);
 
   React.useEffect(() => {
     if (selectedCity) {
-      fetchLatestSCityData(selectedCity)
-        .then((data: WeatherData) => {
+      fetchLatestData(selectedCity, selectedFarm)
+        .then((data: any) => {
+          console.log(data);
+          console.log(data[0]);
           setWeatherData(data);
         })
         .catch((error: Error) => console.error("Failed to fetch data:", error));
     }
-  }, [selectedCity]);
-
-  React.useEffect(() => {
-    if (selectedFarm) {
-      fetchLatestSFarmData(selectedCity, selectedFarm)
-        .then((data: any) => {
-          setWeatherData(data[0]);
-        })
-        .catch((error: Error) => console.error("Failed to fetch data:", error));
-    }
-  }, [selectedFarm, selectedCity]);
+  }, [selectedCity, selectedFarm]);
 
   const renderDropdown = () => (
     <div

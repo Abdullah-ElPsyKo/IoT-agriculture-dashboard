@@ -61,7 +61,7 @@ const Chart = () => {
   const [selectedCity, setSelectedCity] = React.useState<string>("");
   const [cities, setCities] = React.useState<string[]>([]);
 
-  const [selectedFarm, setSelectedFarm] = React.useState<string>("None");
+  const [selectedFarm, setSelectedFarm] = React.useState<string>("");
   const [farms, setFarms] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -78,7 +78,12 @@ const Chart = () => {
   React.useEffect(() => {
     if (selectedCity) {
       fetchUniqueFarms(selectedCity)
-        .then((farmList) => setFarms(farmList))
+        .then((farmList) => {
+          if (farmList.length > 0 && !selectedFarm) {
+            setSelectedFarm(farmList[0]);
+          }
+          setFarms(farmList);
+        })
         .catch((error) => console.error("Failed to fetch farms:", error));
     }
   }, [selectedCity]);

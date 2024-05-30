@@ -67,6 +67,20 @@ export async function fetchLatestCityData(city: any, page: any, limit: any) {
   }
 }
 
+export async function fetchLatestData(city:string, farm:string) {
+  try {
+    const response = await fetch(`http://s140639.devops-ap.be/api/latest_data/${city}/${farm}`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data; // This will be the latest environmental data object
+  } catch (error) {
+    console.error('There has been a problem with your fetch operation:', error);
+    throw error; // Rethrow so calling code can handle it
+  }
+}
+
 
 export const fetchPaginatedData = (page = 1, limit = 15) => {
   return fetch(`http://s140639.devops-ap.be/api/latest_data/page/${page}/limit/${limit}`)
