@@ -27,9 +27,9 @@ export const fetchLatestSCityData = async (city: string) => {
   return data; // Assuming the response is a single WeatherData object
 };
 
-export const fetchLatestSFarmData = async (city: string) => {
+export const fetchLatestSFarmData = async (city: string, farm:string) => {
   const response = await fetch(
-    `http://s140639.devops-ap.be/api/unique_farms/${city}`
+    `http://s140639.devops-ap.be/api/city_farm_data/${city}/${farm}`
   );
   if (!response.ok) {
     throw new Error(

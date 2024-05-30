@@ -5,6 +5,8 @@ import WeatherData from "../../../api/types";
 import {
   fetchUniqueCities,
   fetchLatestSCityData,
+  fetchUniqueFarms,
+  fetchLatestSFarmData,
 } from "../../../api/fetchData";
 import CustomSelect from "./Select";
 
@@ -19,6 +21,9 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
   );
   const [selectedCity, setSelectedCity] = React.useState<string>("");
   const [cities, setCities] = React.useState<string[]>([]);
+
+  const [selectedFarm, setSelectedFarm] = React.useState<string>("None");
+  const [farms, setFarms] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     fetchUniqueCities()
@@ -35,6 +40,14 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
 
   React.useEffect(() => {
     if (selectedCity) {
+      fetchUniqueFarms(selectedCity)
+        .then((farmList) => setFarms(farmList))
+        .catch((error) => console.error("Failed to fetch farms:", error));
+    }
+  }, [selectedCity]);
+
+  React.useEffect(() => {
+    if (selectedCity) {
       fetchLatestSCityData(selectedCity)
         .then((data: WeatherData) => {
           setWeatherData(data);
@@ -43,12 +56,35 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
     }
   }, [selectedCity]);
 
+  React.useEffect(() => {
+    if (selectedFarm) {
+      fetchLatestSFarmData(selectedCity, selectedFarm)
+        .then((data: any) => {
+          setWeatherData(data[0]);
+        })
+        .catch((error: Error) => console.error("Failed to fetch data:", error));
+    }
+  }, [selectedFarm, selectedCity]);
+
   const renderDropdown = () => (
-    <CustomSelect
-      selectedCity={selectedCity}
-      setSelectedCity={setSelectedCity}
-      cities={cities}
-    />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <CustomSelect
+        selectedValue={selectedCity}
+        onSelect={setSelectedCity}
+        options={cities}
+      />
+      <CustomSelect
+        selectedValue={selectedFarm}
+        onSelect={setSelectedFarm}
+        options={farms}
+      />
+    </div>
   );
 
   return (
@@ -56,9 +92,11 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
       <Title>
         Latest Weather in{" "}
         {weatherData
-          ? `${weatherData.city}, ${new Date(
-              weatherData.date
-            ).toLocaleDateString("en-US", {
+          ? `${
+              selectedFarm == "None"
+                ? weatherData.city
+                : `${weatherData.city}, ${weatherData.farm}`
+            }, ${new Date(weatherData.date).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
               year: "numeric",
@@ -90,30 +128,19 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
           >
             Humidity: {parseFloat(weatherData.humidity).toFixed(2)}%
           </Typography>
-          <Typography
-            color="text.secondary"
-            sx={{ flex: 1, fontSize: "0.75rem", marginTop: "16px" }}
-          >
-            {new Date(weatherData.date).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </Typography>
         </React.Fragment>
       )}
-      <div>
-        <a
-          href={isHistoryPage ? "/" : `/history/${selectedCity}/1/15`}
-          style={{
-            fontSize: "0.875rem",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          {isHistoryPage ? "Go back" : "View history"}
-        </a>
-      </div>
+
+      <a
+        href={isHistoryPage ? "/" : `/history/${selectedCity}/1/15`}
+        style={{
+          fontSize: "0.875rem",
+          textDecoration: "underline",
+          cursor: "pointer",
+        }}
+      >
+        {isHistoryPage ? "Go back" : "View history"}
+      </a>
     </React.Fragment>
   );
 };

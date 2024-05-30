@@ -2,7 +2,6 @@ import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 import { LineChart, axisClasses } from "@mui/x-charts";
 import { ChartsTextStyle } from "@mui/x-charts/ChartsText";
-import Title from "./Title";
 import {
   fetchUniqueCities,
   fetchAllCityData,
@@ -62,7 +61,7 @@ const Chart = () => {
   const [selectedCity, setSelectedCity] = React.useState<string>("");
   const [cities, setCities] = React.useState<string[]>([]);
 
-  const [selectedFarm, setSelectedFarm] = React.useState<string>("");
+  const [selectedFarm, setSelectedFarm] = React.useState<string>("None");
   const [farms, setFarms] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -86,7 +85,7 @@ const Chart = () => {
 
   React.useEffect(() => {
     if (selectedFarm) {
-      fetchLatestSFarmData(selectedFarm)
+      fetchLatestSFarmData(selectedCity, selectedFarm)
         .then((data: WeatherData[]) => {
           if (!Array.isArray(data)) {
             throw new TypeError("Expected an array of weather data");
@@ -157,12 +156,18 @@ const Chart = () => {
           alignItems: "center",
         }}
       >
-        <Title>Monthly Average Temperature</Title>
+        <h2 style={{ fontSize: "10px", color: "rgb(25, 118, 210)" }}>
+          Monthly Average Temperature,{" "}
+          {selectedFarm == "None"
+            ? selectedCity
+            : `${selectedCity}, ${selectedFarm}`}
+        </h2>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexDirection: "column",
           }}
         >
           <CustomSelect
