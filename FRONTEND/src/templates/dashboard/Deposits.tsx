@@ -104,7 +104,7 @@ const Deposits: React.FC<DepositsProps> = ({ isHistoryPage = false }) => {
       )}
       <div>
         <a
-          href={`/history/${selectedCity}/1/15`}
+          href={isHistoryPage ? "/" : `/history/${selectedCity}/1/15`}
           style={{
             fontSize: "0.875rem",
             textDecoration: "underline",

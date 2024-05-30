@@ -35,6 +35,14 @@ const History = () => {
   React.useEffect(() => {
     fetchLatestCityData(city, page, limit)
       .then((fetchedData: WeatherData[]) => {
+        if (!Array.isArray(fetchedData)) {
+          console.error(
+            "Expected fetchedData to be an array, got:",
+            fetchedData
+          );
+          return; // Exit early if fetchedData is not an array
+        }
+
         fetchedData.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
@@ -54,11 +62,6 @@ const History = () => {
       .catch((error: Error) => console.error("Failed to fetch data:", error));
   }, [city, pageNumber, limitNumber]);
 
-  const pageData = data.slice(
-    pageNumber * limitNumber,
-    (pageNumber + 1) * limitNumber
-  );
-
   return (
     <div>
       {" "}
@@ -73,7 +76,6 @@ const History = () => {
                   ? theme.palette.grey[100]
                   : theme.palette.grey[900],
               flexGrow: 1,
-              height: "100vh",
               overflow: "auto",
             }}
           >
@@ -131,7 +133,7 @@ const History = () => {
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {pageData.map((row: any) => (
+                            {data.map((row: any) => (
                               <TableRow key={row.id}>
                                 <TableCell>
                                   {new Date(row.date).toLocaleDateString()}{" "}
