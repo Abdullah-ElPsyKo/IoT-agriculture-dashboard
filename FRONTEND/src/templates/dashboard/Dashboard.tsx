@@ -4,14 +4,7 @@ import Deposits from "./Deposits";
 import APIDeposits from "./APIDeposits";
 import Orders from "./Orders";
 
-interface DashboardProps {
-  data: any;
-  error?: Error; // Make error prop optional
-}
-
-const Dashboard = ({ error }: DashboardProps) => {
-  console.log("error:", error);
-
+const Dashboard = () => {
   return (
     <div>
       <Box

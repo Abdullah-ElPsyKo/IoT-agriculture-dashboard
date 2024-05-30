@@ -1,51 +1,45 @@
+import {
+  FaUser,
+  FaCode,
+  FaFileAlt,
+  FaServer,
+  FaPaintBrush,
+} from "react-icons/fa";
+
 const people = [
   {
     name: "Nelson Neves",
     role: "Project Advisor",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517843569279-7f6c3ff7785d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "University of Oxford",
   },
   {
     name: "Abdulla Bagishev",
     role: "Backend Developer",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "AP Hogeschool",
   },
   {
     name: "Bruno Aguiar",
     role: "Documentation",
-    imageUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "Ispgaya",
   },
   {
     name: "George Paschalis",
     role: "Hardware",
-    imageUrl:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "Hellenic Mediterranean University",
   },
   {
     name: "John von Muhlen",
     role: "Web Design",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "InHolland University of Applied Sciences",
   },
   {
     name: "Mabula Thomas",
     role: "Hardware",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "Karume Institute of Science and Technology",
   },
   {
     name: "Seppe Faster",
     role: "Web Design",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517843569279-7f6c3ff7785d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     university: "AP Hogeschool",
   },
 ];
@@ -84,28 +78,47 @@ const AboutUs = () => {
           role="list"
           className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2"
         >
-          {people.map((person) => (
-            <li key={person.name}>
-              <div className="flex items-center gap-x-6">
-                <img
-                  className="h-16 w-16 rounded-full"
-                  src={person.imageUrl}
-                  alt=""
-                />
-                <div>
-                  <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">
-                    {person.name}
-                  </h3>
-                  <p className="text-sm font-semibold leading-6 text-green-600">
-                    {person.role}
-                  </p>
-                  <p className="text-sm leading-6 text-gray-600">
-                    {person.university}
-                  </p>
+          {people.map((person) => {
+            let IconComponent;
+            switch (person.role) {
+              case "Project Advisor":
+                IconComponent = FaUser; // Example icon for Project Advisor
+                break;
+              case "Backend Developer":
+                IconComponent = FaCode; // Example icon for Backend Developer
+                break;
+              case "Documentation":
+                IconComponent = FaFileAlt; // Example icon for Documentation
+                break;
+              case "Hardware":
+                IconComponent = FaServer; // Example icon for Hardware
+                break;
+              case "Web Design":
+                IconComponent = FaPaintBrush; // Example icon for Web Design
+                break;
+              default:
+                IconComponent = FaUser; // Default icon if none matches
+            }
+
+            return (
+              <li key={person.name}>
+                <div className="flex items-center gap-x-6">
+                  <IconComponent size="2em" /> {/* Adjust size as needed */}
+                  <div>
+                    <h3 className="text-base font-semibold leading-7 tracking-tight text-gray-900">
+                      {person.name}
+                    </h3>
+                    <p className="text-sm font-semibold leading-6 text-green-600">
+                      {person.role}
+                    </p>
+                    <p className="text-sm leading-6 text-gray-600">
+                      {person.university}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div
