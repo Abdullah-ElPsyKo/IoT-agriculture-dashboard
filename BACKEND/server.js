@@ -82,47 +82,75 @@ router.get('/latest_data/:number', async (req, res) => {
   }
 });
 
-// GET route to fetch the latest data entries for a specific city with pagination
-router.get('/latest_city_data/:city/page/:page/limit/:limit', async (req, res) => {
-  const { city, page, limit } = req.params;
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  next();
+});
 
+router.get('/latest_city_data/:city/page/:page/limit/:limit', async (req, res) => {
   try {
-    const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
+    const { city, page, limit } = req.params;
+    const pageNumber = parseInt(page, 10);
+    const pageSize = parseInt(limit, 10);
+    const offset = (pageNumber - 1) * pageSize;
+
+    // Validate input
+    if (isNaN(pageNumber) || isNaN(pageSize) || pageNumber < 1 || pageSize < 1) {
+      return res.status(400).json({ error: 'Invalid page or limit parameter' });
+    }
+
+    // Fetch the paginated data
     const data = await EnvironmentalData.findAll({
       where: { city },
       order: [['date', 'DESC']],
-      limit: parseInt(limit, 10),
+      limit: pageSize,
       offset: offset
     });
-    res.json(data);
+
+    // Fetch the total count of records for the city
+    const totalCount = await EnvironmentalData.count({
+      where: { city }
+    });
+
+    // Send both the paginated data and the total count
+    res.json({
+      data: data,
+      totalCount: totalCount
+    });
+
   } catch (error) {
     console.error(`Error fetching data for city ${city} with pagination:`, error);
-    res.status(500).send(`Error fetching data for city ${city}`);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 // GET route to fetch data entries with pagination (not city-specific)
 router.get('/latest_data/page/:page/limit/:limit', async (req, res) => {
   const { page, limit } = req.params;
 
   try {
+    const totalCount = await EnvironmentalData.count(); // Get total count of all entries
     const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
     const data = await EnvironmentalData.findAll({
       order: [['date', 'DESC']],
       limit: parseInt(limit, 10),
       offset: offset
     });
-    res.json(data);
+    res.json({ data, totalCount });
   } catch (error) {
     console.error(`Error fetching data with pagination:`, error);
     res.status(500).send('Error fetching data with pagination');
   }
 });
 
+
+
 // POST route to add new data
 router.post('/add_data', async (req, res) => {
   try {
-    const { country, city, temperature, soilMoisture, winds } = req.body;
+    const { country, city, temperature, soilMoisture, humidity } = req.body;
     // Validate the data
     if (!country || !city) {
       return res.status(400).send('Missing required fields: country, or city');
@@ -134,7 +162,7 @@ router.post('/add_data', async (req, res) => {
       city,
       temperature,
       soilMoisture,
-      winds
+      humidity
     };
     console.log(data);
     await EnvironmentalData.create(data);
