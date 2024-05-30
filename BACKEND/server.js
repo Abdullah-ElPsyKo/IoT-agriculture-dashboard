@@ -36,6 +36,41 @@ router.get('/unique_cities', async (req, res) => {
   }
 });
 
+// GET route to fetch all unique farms of a specific city
+router.get('/unique_farms/:city', async (req, res) => {
+  const { city } = req.params;
+  try {
+    const farms = await EnvironmentalData.findAll({
+      attributes: [[sequelize.fn('DISTINCT', sequelize.col('farm')), 'farm']],
+      where: { city: city }
+    });
+    // Map the results to extract just the farm names
+    const farmNames = farms.map(farm => farm.farm);
+    res.json(farmNames);
+  } catch (error) {
+    console.error(`Error fetching farms for city ${city}:`, error);
+    res.status(500).send(`Error fetching farms for city ${city}`);
+  }
+});
+
+// GET route to fetch all data for a specific city and farm
+router.get('/city_farm_data/:city/:farm', async (req, res) => {
+  const { city, farm } = req.params;
+  try {
+    const data = await EnvironmentalData.findAll({
+      where: { city, farm }
+    });
+    if (data.length > 0) {
+      res.json(data);
+    } else {
+      res.status(404).send(`No data found for city ${city} and farm ${farm}`);
+    }
+  } catch (error) {
+    console.error(`Error fetching data for city ${city} and farm ${farm}:`, error);
+    res.status(500).send(`Error fetching data for city ${city} and farm ${farm}`);
+  }
+});
+
 // GET route to fetch all data for a specific city
 router.get('/city_data/:city', async (req, res) => {
   const { city } = req.params;
@@ -150,13 +185,14 @@ router.get('/latest_data/page/:page/limit/:limit', async (req, res) => {
 // POST route to add new data
 router.post('/add_data', async (req, res) => {
   try {
-    const { country, city, temperature, soilMoisture, humidity } = req.body;
+    const { country, city, temperature, soilMoisture, humidity, farm } = req.body;
     // Validate the data
     if (!country || !city) {
       return res.status(400).send('Missing required fields: country, or city');
     }
     // Explicitly set the date to the current date and time
     const data = {
+      farm,
       date: new Date(),
       country,
       city,

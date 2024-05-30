@@ -15,6 +15,8 @@ const countries = [
   }
 ];
 
+const farmers = ["farm 1", "farm 2", "farm 3", "farm 4"];
+
 function generateRandomDate() {
   const currentDate = new Date();
   const pastDate = new Date(currentDate.getTime() - (365 * 24 * 60 * 60 * 1000)); // One year ago
@@ -31,6 +33,10 @@ module.exports = (sequelize) => {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW
+    },
+    farm: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
     country: {
       type: DataTypes.STRING,
@@ -51,8 +57,10 @@ module.exports = (sequelize) => {
     const data = [...Array(500)].map(() => {
       const country = countries[Math.floor(Math.random() * countries.length)];
       const city = country.cities[Math.floor(Math.random() * country.cities.length)];
+      const farm = farmers[Math.floor(Math.random() * farmers.length)];
       return {
         date: generateRandomDate(),
+        farm: farm,
         country: country.name,
         city: city,
         temperature: Math.random() * 35,
