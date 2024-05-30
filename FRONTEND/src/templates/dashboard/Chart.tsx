@@ -60,9 +60,9 @@ const Chart = () => {
         dataByMonth[month].count += 1;
       });
 
-      const monthlyAverages = Object.keys(dataByMonth).map(month => ({
+      const monthlyAverages = Object.keys(dataByMonth).map((month) => ({
         time: month,
-        amount: dataByMonth[month].sum / dataByMonth[month].count,
+        amount: Math.round(dataByMonth[month].sum / dataByMonth[month].count),
       }));
 
       setChartData(sortMonthlyAverages(monthlyAverages));
