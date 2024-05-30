@@ -9,6 +9,7 @@ interface WeatherData {
   humidity: string;
   soilMoisture: string;
   winds: string;
+  farm: string;
 }
 
 export default WeatherData;

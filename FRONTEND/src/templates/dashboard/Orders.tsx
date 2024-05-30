@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
-import { fetchPaginatedData } from "../../../api/fetchData"; // Remove fetchPaginatedCityData
+import { fetchPaginatedData } from "../../../api/fetchData";
 import WeatherData from "../../../api/types";
 import { Paper, TableContainer, TablePagination } from "@mui/material";
 
@@ -37,6 +37,7 @@ const Orders: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell>Date/Time</TableCell>
+              <TableCell>Farm</TableCell> {/* New column header for 'Farm' */}
               <TableCell>Country</TableCell>
               <TableCell>City</TableCell>
               <TableCell>Soil Moisture</TableCell>
@@ -47,12 +48,20 @@ const Orders: React.FC = () => {
           <TableBody>
             {data.map((row: WeatherData) => (
               <TableRow key={row.id}>
-                <TableCell>{new Date(row.date).toLocaleDateString()} {new Date(row.date).toLocaleTimeString()}</TableCell>
+                <TableCell>
+                  {new Date(row.date).toLocaleDateString()}{" "}
+                  {new Date(row.date).toLocaleTimeString()}
+                </TableCell>
+                <TableCell>{row.farm ?? "farm"}</TableCell>{" "}
                 <TableCell>{row.country}</TableCell>
                 <TableCell>{row.city}</TableCell>
-                <TableCell>{parseFloat(row.soilMoisture).toFixed(2)}%</TableCell>
+                <TableCell>
+                  {parseFloat(row.soilMoisture).toFixed(2)}%
+                </TableCell>
                 <TableCell>{parseFloat(row.humidity).toFixed(2)}%</TableCell>
-                <TableCell>{parseFloat(row.temperature).toFixed(2)} °C</TableCell>
+                <TableCell>
+                  {parseFloat(row.temperature).toFixed(2)} °C
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

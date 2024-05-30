@@ -92,6 +92,7 @@ const History = () => {
                       <TableHead>
                         <TableRow>
                           <TableCell>Date/Time</TableCell>
+                          <TableCell>Farm</TableCell>
                           <TableCell>Country</TableCell>
                           <TableCell>City</TableCell>
                           <TableCell>Soil Moisture</TableCell>
@@ -106,6 +107,7 @@ const History = () => {
                               {new Date(row.date).toLocaleDateString()}{" "}
                               {new Date(row.date).toLocaleTimeString()}
                             </TableCell>
+                            <TableCell>{row.farm ?? "farm"}</TableCell>{" "}
                             <TableCell>{row.country}</TableCell>
                             <TableCell>{row.city}</TableCell>
                             <TableCell>
