@@ -68,3 +68,11 @@ export const fetchPaginatedData = (page = 1, limit = 15) => {
       return Promise.reject(error);
     });
 };
+
+export const fetchAllCityData = async (city: string) => {
+  const response = await fetch(`http://s140639.devops-ap.be/api/city_data/${city}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data for the selected city: ${response.statusText}`);
+  }
+  return response.json();
+};
