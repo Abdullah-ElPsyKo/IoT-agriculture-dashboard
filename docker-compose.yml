@@ -7,10 +7,10 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://user:password@db/yourdbname
-    
+    # REMOVE LABELS IF YOU DO NOT USE TRAEFIK AS REVERSE PROXY
     # labels:
     #   - "traefik.enable=true"
-    #   - "traefik.http.routers.backend.rule=Host(`s140639.devops-ap.be`) && PathPrefix(`/api`)"
+    #   - "traefik.http.routers.backend.rule=Host(`YOUR_URL`) && PathPrefix(`/api`)"
     #   - "traefik.http.routers.backend.entrypoints=web"
     #   - "traefik.http.services.backend.loadbalancer.server.port=3000"
     #   - "traefik.docker.network=web"
@@ -26,16 +26,17 @@ services:
       context: ./FRONTEND
       dockerfile: Dockerfile
     ports:
-      - "8080:80"  # Change to "8080:80" to avoid conflict
+      - "8080:80"
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`s140639.devops-ap.be`)"
-      - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.services.frontend.loadbalancer.sserver.port=80"
-      - "traefik.docker.network=web"
+    # REMOVE LABELS IF YOU DO NOT USE TRAEFIK AS REVERSE PROXY
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.frontend.rule=Host(`YOUR_URL`)"
+    #   - "traefik.http.routers.frontend.entrypoints=web"
+    #   - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    #   - "traefik.docker.network=web"
     networks:
       - web
 
