@@ -1,0 +1,97 @@
+/* 
+THIS FILE GENERATES FAKE DATA, USE FOR DEVELOPMENT PURPOSES ONLY
+ */
+const { DataTypes } = require('sequelize');
+
+// Updated list to include African countries and cities
+const countries = [
+  {
+    name: "Nigeria",
+    cities: ["Lagos", "Abuja", "Port Harcourt", "Kano"]
+  },
+  {
+    name: "Kenya",
+    cities: ["Nairobi", "Mombasa", "Kisumu", "Nakuru"]
+  },
+  {
+    name: "South Africa",
+    cities: ["Johannesburg", "Cape Town", "Durban", "Pretoria"]
+  },
+  {
+    name: "Egypt",
+    cities: ["Cairo", "Alexandria", "Giza", "Luxor"]
+  },
+  {
+    name: "Tanzania",
+    cities: ["Dar es Salaam", "Mwanza", "Arusha", "Dodoma"]
+  },
+  {
+    name: "Ghana",
+    cities: ["Accra", "Kumasi", "Tamale", "Takoradi"]
+  },
+  {
+    name: "Uganda",
+    cities: ["Kampala", "Entebbe", "Gulu", "Mbarara"]
+  }
+];
+
+const farmers = ["farm 1", "farm 2", "farm 3", "farm 4"];
+
+// Function to generate a random date within the last year
+function generateRandomDate() {
+  const currentDate = new Date();
+  const pastDate = new Date(currentDate.getTime() - (365 * 24 * 60 * 60 * 1000)); // One year ago
+  return new Date(pastDate.getTime() + Math.random() * (currentDate.getTime() - pastDate.getTime()));
+}
+
+module.exports = (sequelize) => {
+  if (!sequelize) {
+    throw new Error('Sequelize instance was not passed to the model definition.');
+  }
+
+  const EnvironmentalData = sequelize.define('EnvironmentalData', {
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    farm: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    temperature: DataTypes.FLOAT,
+    soilMoisture: DataTypes.FLOAT,
+    humidity: DataTypes.FLOAT,
+  }, {
+    timestamps: false
+  });
+
+  EnvironmentalData.insertInitialData = async function() {
+    const data = [...Array(1500)].map(() => {
+      const country = countries[Math.floor(Math.random() * countries.length)];
+      const city = country.cities[Math.floor(Math.random() * country.cities.length)];
+      const farm = farmers[Math.floor(Math.random() * farmers.length)];
+      return {
+        date: generateRandomDate(),
+        farm: farm,
+        country: country.name,
+        city: city,
+        temperature: Math.random() * 35, // Simulated temperature in Celsius
+        soilMoisture: Math.random() * 100, // Simulated soil moisture percentage
+        humidity: Math.random() * 100 // Simulated humidity percentage
+      };
+    });
+    await this.bulkCreate(data);
+    console.log('Initial data inserted successfully!');
+  };
+
+  return EnvironmentalData;
+};

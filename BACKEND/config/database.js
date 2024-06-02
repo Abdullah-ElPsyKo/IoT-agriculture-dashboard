@@ -8,13 +8,10 @@ const sequelize = new Sequelize('yourdbname', 'user', 'password', {
 
 const EnvironmentalData = require('../models/environmentalData')(sequelize);
 
-// Function to sync database and seed data
+// Function to sync database
 async function syncDatabase() {
-  await sequelize.sync({ force: true });
+  await sequelize.sync({ alter: true }); // Use alter instead of force to avoid dropping tables
   console.log("Database synced!");
-
-  // Call your seed function here, using the method attached to the model
-  await EnvironmentalData.insertInitialData();
 }
 
 // Exporting the sync function along with the sequelize connection
